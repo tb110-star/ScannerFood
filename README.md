@@ -5,7 +5,7 @@
 
 <div align="center">
   <a >
-    <img src="/pasted-image.jpeg">
+    <img src="/pasted-image.png" width="350">
   </a>
 </div>
 
