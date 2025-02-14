@@ -19,7 +19,7 @@
 
 ## Overview
 
-AI Food Scanner is a Swift-based iOS application designed to provide a seamless food recognition experience. Our app enables users to capture a food image using their camera or select one from their gallery, process it using Google Vision API, and retrieve detailed food-related information.
+AI Food Scanner is a Swift-based iOS application designed to provide a seamless food recognition experience. Our app enables users to capture a food image using their camera or select one from their gallery, process it using Google Vision API, and retrieve detailed food-related information (nutrition facts and Macro info).
 
 This application integrates the **Google Vision API** for food image recognition and **Ninja API** for nutritional data analysis.
 
