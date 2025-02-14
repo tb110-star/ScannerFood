@@ -65,6 +65,7 @@ This application integrates the **Google Vision API** for food image recognition
 
 - ***Image Capture & Selection:*** Capture an image using the camera or pick an image from the gallery using `PhotosPicker`.
 - ***Food Recognition:*** Process selected images using Google Vision API.
+- User Confirmation & Editing: Users can confirm recognized ingredients, adjust estimated quantities, and manually edit food details before nutritional analysis.
 - ***Nutritional Analysis:*** Retrieve calorie and macronutrient data from **Ninja API**.
 - ***User Authentication:*** Secure login and account management via Firebase Authentication.
 - ***History Tracking:*** Save scanned food items and track dietary intake over time.
