@@ -9,9 +9,10 @@ import SwiftUI
 import PhotosUI
 
 struct ScanView: View {
-    //@Environment(ScanViewModel.self) var viewModel
-    @State  var viewModel = ScanViewModel()
+    //  @Environment(ScanViewModel.self) private var viewModel
+   // @State  var viewModel = ScanViewModel()
    // @State var viewModel: ScanViewModel // preview fromoutside
+    @Bindable var viewModel: ScanViewModel
     var body: some View {
         VStack {
             if let image = viewModel.selectedImage {
@@ -43,7 +44,9 @@ struct ScanView: View {
                     .cornerRadius(10)
             }
             .onChange(of: viewModel.selectedItem, initial: false) { oldItem, newItem in
-                viewModel.loadSelectedImage()
+                Task {
+                        await viewModel.loadAndConvertImage()
+                    }
             }
         }
         .padding()
@@ -53,6 +56,6 @@ struct ScanView: View {
 
 
 #Preview {
-    ScanView()
+    ScanView(viewModel: ScanViewModel())
     //    ScanView(viewModel: ScanViewModel.previewModel)
 }

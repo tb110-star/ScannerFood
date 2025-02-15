@@ -91,7 +91,7 @@ struct TabContentView : View {
         case .home:
             HomeView()
         case .scann:
-            ScanView()
+            ScanView(viewModel: ScanViewModel())
         case .favorite:
             FavoriteView()
         case .setting:
