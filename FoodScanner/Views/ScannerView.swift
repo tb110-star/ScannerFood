@@ -48,6 +48,11 @@ struct ScanView: View {
                         await viewModel.loadAndConvertImage()
                     }
             }
+            if let response = viewModel.visionResponse {
+                        List(response.labelAnnotations ?? [], id: \.mid) { label in
+                            Text("\(label.description) - Score: \(label.score)")
+                        }
+                    }
         }
         .padding()
     }
