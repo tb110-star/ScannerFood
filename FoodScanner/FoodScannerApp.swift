@@ -6,18 +6,37 @@
 //
 
 import SwiftUI
+import SwiftData
+import FirebaseCore
 
 @main
 struct FoodScannerApp: App {
     @StateObject var  tabVM = TabVM()
     private var scanViewModel = ScanViewModel()
-   @StateObject var  settingVM = SettingVM()
+    @StateObject var  settingVM = SettingVM()
+    @State private var authViewModel : AuthViewModel
+   
+    init() {
+        FirebaseConfiguration.shared.setLoggerLevel(.min)
+        FirebaseApp.configure()
+        authViewModel = AuthViewModel()
+    }
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(settingVM)
-                .environmentObject(tabVM)
-                .environment(scanViewModel)
+            if authViewModel.isUserSignedIn {
+                ContentView()
+                    .environmentObject(settingVM)
+                    .environmentObject(tabVM)
+                    .environment(scanViewModel)
+                    .environment(authViewModel)
+            } else {
+                LoginView(authViewModel: AuthViewModel())
+                    .environmentObject(settingVM)
+                    .environmentObject(tabVM)
+                    .environment(scanViewModel)
+                    .environment(authViewModel)
+            }
         }
+        .modelContainer(for:DataJSONCach.self)
     }
 }

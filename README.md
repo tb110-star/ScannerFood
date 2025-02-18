@@ -5,7 +5,11 @@
 
 <div align="center">
   <a >
+<<<<<<< HEAD
     <img src="https://raw.githubusercontent.com/tb110-star/ScannerFood/main/pasted-image.jpeg" width="600">
+=======
+    <img src="/pasted-image.png" width="350">
+>>>>>>> main
   </a>
 </div>
 
@@ -19,7 +23,11 @@
 
 ## Overview
 
+<<<<<<< HEAD
 AI Food Scanner is a Swift-based iOS application designed to provide a seamless food recognition experience. Our app enables users to capture a food image using their camera or select one from their gallery, process it using Google Vision API, and retrieve detailed food-related information.
+=======
+AI Food Scanner is a Swift-based iOS application designed to provide a seamless food recognition experience. Our app enables users to capture a food image using their camera or select one from their gallery, process it using Google Vision API, and retrieve detailed food-related information (nutrition facts and Macro info).
+>>>>>>> main
 
 This application integrates the **Google Vision API** for food image recognition and **Ninja API** for nutritional data analysis.
 
@@ -37,8 +45,11 @@ This application integrates the **Google Vision API** for food image recognition
 
 [Backend Integration](#Backend-Integration)
 
+<<<<<<< HEAD
 [Contributing](#Contributing)
 
+=======
+>>>>>>> main
 [Contact/Authors](#Contact/Authors)
 
 
@@ -56,7 +67,11 @@ This application integrates the **Google Vision API** for food image recognition
 1. Clone the AI Food Scanner app using **Git**
 
 ```git
+<<<<<<< HEAD
   git clone https://github.com/YOUR_GITHUB_USERNAME/AI_Food_Scanner.git [your-destination-path]
+=======
+  git clone https://https://github.com/tb110-star/ScannerFood.git
+>>>>>>> main
 ```
 2. Open the project in **Xcode**.
 
@@ -67,6 +82,10 @@ This application integrates the **Google Vision API** for food image recognition
 
 - ***Image Capture & Selection:*** Capture an image using the camera or pick an image from the gallery using `PhotosPicker`.
 - ***Food Recognition:*** Process selected images using Google Vision API.
+<<<<<<< HEAD
+=======
+- User Confirmation & Editing: Users can confirm recognized ingredients, adjust estimated quantities, and manually edit food details before nutritional analysis.
+>>>>>>> main
 - ***Nutritional Analysis:*** Retrieve calorie and macronutrient data from **Ninja API**.
 - ***User Authentication:*** Secure login and account management via Firebase Authentication.
 - ***History Tracking:*** Save scanned food items and track dietary intake over time.
@@ -84,9 +103,13 @@ This application integrates the **Google Vision API** for food image recognition
 This app utilizes various third-party libraries and technologies:
 
 - **[SwiftUI Framework](https://developer.apple.com/documentation/swiftui/)** for UI development
+<<<<<<< HEAD
 - **[Alamofire](https://github.com/Alamofire/Alamofire)** for network requests
 - **[Google Vision API](https://cloud.google.com/vision)** for food recognition
 - **[Kingfisher](https://github.com/onevcat/Kingfisher)** for image handling
+=======
+- **[URLSession](https://developer.apple.com/documentation/foundation/urlsession)** for network requests
+>>>>>>> main
 - **[Swift Package Manager](https://developer.apple.com/documentation/swift_packages/)** for dependency management
 
 
@@ -105,16 +128,28 @@ AI Food Scanner leverages Firebase and external APIs for seamless backend functi
 - **[Ninja API](https://api-ninjas.com/)**
   - Provides real-time nutritional analysis of scanned food items.
 
+<<<<<<< HEAD
 These backend services ensure a reliable and secure foundation for AI Food Scanner, providing users with a smooth experience while interacting with the app.
 
 
 ## Contributing
 
 [Your GitHub Username](https://github.com/YOUR_GITHUB_USERNAME)
+=======
+- **[Google Vision API](https://cloud.google.com/vision)**
+  - for food recognition
+
+These backend services ensure a reliable and secure foundation for AI Food Scanner, providing users with a smooth experience while interacting with the app.
+
+>>>>>>> main
 
 
 ## Contact/Authors
 
+<<<<<<< HEAD
 [Your Name](https://github.com/YOUR_GITHUB_USERNAME)
+=======
+[Tarlan Bakhtiari](git clone https://https://github.com/tb110-star/ScannerFood.git)
+>>>>>>> main
 
 

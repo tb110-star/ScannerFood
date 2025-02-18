@@ -12,9 +12,7 @@ struct HomeView: View {
         VStack {
                    Text("Home View")
                }
-               .onAppear {
-                   VisionAPIManager.testJSONPath() // ✅ اینجا اجرا می‌شود
-               }
+               
            }    }
 
 

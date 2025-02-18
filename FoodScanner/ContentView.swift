@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var settingVM: SettingVM
     @EnvironmentObject var tabVM: TabVM
-
+    @Environment(AuthViewModel.self) private var authViewModel
     var body: some View {
       
     TabView()
@@ -25,5 +25,6 @@ struct ContentView: View {
     ContentView()
         .environmentObject(settingVM)
         .environmentObject(tabVM)
-    
+        .environment(AuthViewModel())
+
 }
