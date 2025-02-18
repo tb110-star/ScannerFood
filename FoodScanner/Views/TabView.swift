@@ -66,6 +66,8 @@ struct TabView: View {
     let bgColor: Color = .init(white: 0.9)
     @EnvironmentObject var settingVM: SettingVM
     @EnvironmentObject var tabVM: TabVM
+    private var viewModel = ScanViewModel()
+
     var body: some View {
         ZStack{
             TabContentView()
@@ -91,7 +93,7 @@ struct TabContentView : View {
         case .home:
             HomeView()
         case .scann:
-            ScanView(viewModel: ScanViewModel())
+            ScanView()
         case .favorite:
             FavoriteView()
         case .setting:

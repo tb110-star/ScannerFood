@@ -4,63 +4,67 @@
 //
 //  Created by tarlan bakhtiari on 04.02.25.
 //
-
 import SwiftUI
 import PhotosUI
 
 struct ScanView: View {
-    //  @Environment(ScanViewModel.self) private var viewModel
-   // @State  var viewModel = ScanViewModel()
-   // @State var viewModel: ScanViewModel // preview fromoutside
-    @Bindable var viewModel: ScanViewModel
+    @State private var selectedItem: PhotosPickerItem? = nil
+    private var viewModel = ScanViewModel()
+    
     var body: some View {
         VStack {
-            if let image = viewModel.selectedImage {
-                Image(uiImage: image)
+            PhotosPicker("Select From Gallery", selection: $selectedItem, matching: .images)
+                .padding()
+            
+            if let uiImage = viewModel.selectedUIImage {
+                Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFit()
-                    .frame(height: 300)
+                    .frame(height: 200)
                     .cornerRadius(10)
-            } else {
-                Rectangle()
-                    .fill(Color.gray.opacity(0.3))
-                    .frame(height: 300)
-                    .overlay(
-                        Text("No Image Selected")
-                            .foregroundColor(.gray)
-                    )
-            }
-
-            PhotosPicker(
-                selection: $viewModel.selectedItem,
-                matching: .images,
-                photoLibrary: .shared()
-            ) {
-                Text("Upload from Gallery")
                     .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+            } else if viewModel.isLoading {
+                ProgressView("Processing...")
+                    .padding()
             }
-            .onChange(of: viewModel.selectedItem, initial: false) { oldItem, newItem in
-                Task {
-                        await viewModel.loadAndConvertImage()
-                    }
+            
+            Button("Ingredient Detection") {
+                viewModel.recognizeFood()
             }
-            if let response = viewModel.visionResponse {
-                        List(response.labelAnnotations ?? [], id: \.mid) { label in
-                            Text("\(label.description) - Score: \(label.score)")
-                        }
+            .buttonStyle(.borderedProminent)
+            .padding()
+            .disabled(viewModel.selectedImageURL == nil)
+            if let errorMessage = viewModel.errorMessage {
+                Text("⚠️ \(errorMessage)")
+                    .foregroundColor(.red)
+                    .padding()
+            }
+            
+            if !viewModel.foodItems.isEmpty {
+                List(viewModel.foodItems) { item in
+                    HStack {
+                        Text(item.name)
+                            .font(.headline)
+                        Spacer()
+                        Text("\(String(format: "%.2f", item.confidence * 100))%")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
                     }
+                }
+            }
         }
-        .padding()
+        .onChange(of: selectedItem) { oldItem, newItem in
+            Task {
+                if let data = try? await newItem?.loadTransferable(type: Data.self) {
+                    viewModel.setSelectedImage(data)
+                }
+            }
+        }
+        
     }
 }
 
 
-
 #Preview {
-    ScanView(viewModel: ScanViewModel())
-    //    ScanView(viewModel: ScanViewModel.previewModel)
+    ScanView()
 }
