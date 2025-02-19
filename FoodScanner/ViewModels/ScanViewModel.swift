@@ -15,8 +15,9 @@ import SwiftData
 @MainActor
 @Observable
 final class ScanViewModel {
-    var foodSelections: [SelectedFoodItem] = []
-    var foodItems: [FoodItem] = []
+    var selectedIngredients: [SelectedIngredient] = []
+    var recognizedIngredients: [RecognizedIngredient] = []
+    var finalIngredients: [SelectedIngredient] = []
     var isLoading = false
     var errorMessage: String?
     var selectedUIImage: UIImage?
@@ -24,7 +25,8 @@ final class ScanViewModel {
     private let repository = FoodRecognitionRepository()
     var nutritionResults: NutritionResponse?
     private let nutritionRepository = NutritionRepository()
-    var selectedFoodItems:[SelectedFoodItem] = []
+    var manuallyAddedFoodItems:[SelectedIngredient] = []
+
     func setSelectedImage(_ data: Data) {
         self.selectedUIImage = UIImage(data: data)
         print("✅ Image selected from gallery.")
@@ -57,8 +59,8 @@ final class ScanViewModel {
             do {
                 isLoading = true
                 let recognizedItems = try await repository.recognizeFood(from: imageUrl)
-                self.foodItems = recognizedItems
-                self.selectedFoodItems = recognizedItems.map { SelectedFoodItem(name: $0.name, amount: "", unit: .gram) }
+                self.recognizedIngredients = recognizedItems
+              
                 print("✅ Food recognition successful: \(recognizedItems.count) items detected")
             } catch {
                 errorMessage = error.localizedDescription
@@ -69,25 +71,48 @@ final class ScanViewModel {
         }
     }
     
-    func createNutritionInput() -> String {
-            var descriptions: [String] = []
 
-        for item in selectedFoodItems {
-                let description = "\(item.amount) \(item.unit.rawValue) of \(item.name)"
-                descriptions.append(description)
+     func addCustomIngredient(name: String, amount: String, unit: MeasurementUnit) {
+         let newIngredient = SelectedIngredient(name: name, amount: amount, unit: unit,isChecked: true)
+         selectedIngredients.append(newIngredient)
+         print("✅ Manually added item: \(name) - \(amount) \(unit.rawValue)")
+     }
+   func toggleIngredientSelection(ingredient: RecognizedIngredient) {
+            if let index = selectedIngredients.firstIndex(where: { $0.name == ingredient.name }) {
+                selectedIngredients.remove(at: index)
+            } else {
+                let newIngredient = SelectedIngredient(name: ingredient.name, amount: "", unit: .gram, isChecked: true)
+                selectedIngredients.append(newIngredient)
             }
-            return descriptions.joined(separator: ", ")
         }
+    func generateFinalList() {
+            finalIngredients = selectedIngredients.filter { $0.isChecked || !$0.amount.isEmpty }
+            print("✅ Final List Ready: \(finalIngredients.count) items")
+        }
+  
+    func createNutritionInput() -> String {
+           let descriptions = finalIngredients
+               .map { "\($0.amount) \($0.unit.rawValue) of \($0.name)" }
+           
+           return descriptions.joined(separator: ", ")
+       }
     func fetchNutritionData() {
+        generateFinalList()
           Task {
               let inputText = createNutritionInput()
-              let requestData = NutritionRequest(input: inputText)
+              if inputText.isEmpty {
+                              print("⚠️ Nutrition input is empty. Aborting request.")
+                              return
+                          }
 
               do {
                   isLoading = true
+                  
+                  let requestData = NutritionRequest(input: inputText)
+                  print("📤 Sending request to Nutrition API with data: \(requestData)")
                   let nutritionData = try await nutritionRepository.getNutritionInfo(requestData)
                   self.nutritionResults = nutritionData
-                  print("✅ Nutrition data received successfully.")
+                  print("✅ Nutrition data received successfully: \(nutritionData)")
               } catch {
                   self.errorMessage = "❌ Failed to fetch nutrition data: \(error.localizedDescription)"
                   print("❌ Error fetching nutrition data: \(error.localizedDescription)")

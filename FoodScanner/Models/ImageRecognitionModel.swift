@@ -6,7 +6,7 @@
 //
 
 import Foundation
-struct FoodItem: Identifiable, Codable {
+struct RecognizedIngredient: Identifiable, Codable {
     let id: String
     let name: String
     let confidence: Double

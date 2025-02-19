@@ -7,7 +7,7 @@
 
 import Foundation
 final class NutritionRepository {
-    private let apiKey = "YOUR_API_KEY"
+    private let apiKey = "86232c0ec6msha0e6116dd4015d6p1801e2jsn8f9975c783b7"
     private let baseURL = "https://ai-nutritional-facts.p.rapidapi.com/getNutritionalInfo"
 
     func getNutritionInfo(_ request: NutritionRequest) async throws -> NutritionResponse {

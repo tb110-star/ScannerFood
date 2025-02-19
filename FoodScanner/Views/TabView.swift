@@ -71,6 +71,7 @@ struct TabView: View {
     var body: some View {
         ZStack{
             TabContentView()
+                .padding(.bottom,80)
             VStack{
                 Spacer()
                 TabsLayoutView()

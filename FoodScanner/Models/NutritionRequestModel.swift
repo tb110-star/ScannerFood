@@ -9,11 +9,12 @@ import Foundation
 struct NutritionRequest: Codable {
     let input: String
 }
-struct SelectedFoodItem: Identifiable {
+struct SelectedIngredient: Identifiable {
     let id = UUID()
     let name: String
     var amount: String
     var unit: MeasurementUnit
+    var isChecked : Bool
 }
 enum MeasurementUnit: String, CaseIterable, Codable {
     case gram = "g"

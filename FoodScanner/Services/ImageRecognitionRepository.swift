@@ -12,7 +12,7 @@ final class FoodRecognitionRepository {
     private let host = "food-item-recognition.p.rapidapi.com"
     private let baseURL = "https://food-item-recognition.p.rapidapi.com/"
 
-    func recognizeFood(from imageUrl: String) async throws -> [FoodItem] {
+    func recognizeFood(from imageUrl: String) async throws -> [RecognizedIngredient] {
         print("🌐 Preparing API request with image URL...") // Debugging print
 
         // Ensure the URL is valid
@@ -56,7 +56,7 @@ final class FoodRecognitionRepository {
             }
 
             print("📖 Decoding API response...")
-            let decodedResponse = try JSONDecoder().decode([FoodItem].self, from: data)
+            let decodedResponse = try JSONDecoder().decode([RecognizedIngredient].self, from: data)
             print("✅ Successfully decoded response!")
 
             return decodedResponse
