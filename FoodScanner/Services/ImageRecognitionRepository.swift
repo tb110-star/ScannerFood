@@ -15,20 +15,17 @@ final class FoodRecognitionRepository {
     func recognizeFood(from imageUrl: String) async throws -> [RecognizedIngredient] {
         print("🌐 Preparing API request with image URL...") // Debugging print
 
-        // Ensure the URL is valid
         guard let url = URL(string: baseURL) else {
             print("❌ Invalid API URL")
             throw URLError(.badURL)
         }
 
-        // Creating the request
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue(apiKey, forHTTPHeaderField: "x-rapidapi-key")
         request.setValue(host, forHTTPHeaderField: "x-rapidapi-host")
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
 
-        // Creating body data
         let bodyString = "image_url=\(imageUrl)"
         guard let bodyData = bodyString.data(using: .utf8) else {
             print("❌ Failed to encode body data")
@@ -77,7 +74,6 @@ final class FoodRecognitionRepository {
 
         var body = Data()
 
-        // اضافه کردن تصویر در قالب فرم-دیتا
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"image\"\r\n\r\n".data(using: .utf8)!)
         body.append(imageData.base64EncodedData()) // **مقدار base64**

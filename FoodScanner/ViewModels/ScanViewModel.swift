@@ -1,10 +1,4 @@
-//
-//  ScanViewModel.swift
-//  FoodScanner
-//
-//  Created by tarlan bakhtiari on 13.02.25.
-//
-//
+
 //  ScanViewModel.swift
 //  FoodScanner
 //

@@ -8,60 +8,6 @@
 
 import SwiftUI
 
-/*
- struct NavigationTab: View {
- @EnvironmentObject var settingVM: SettingVM
- @EnvironmentObject var tabVM: TabVM
- 
- //    init() {
- //        UITabBar.appearance()
- //            .unselectedItemTintColor = UIColor.red // Change inactive tab color to red
- //        }
- var body: some View {
- 
- TabView(selection: $tabVM.tab) {
- Tab("Home",systemImage: "house.fill",value: 0){
- HomeView()
- // .environmentObject(ViewModel)
- 
- }
- 
- Tab("Scann",systemImage: "barcode.viewfinder",value: 1){
- ScannerView()
- // .environmentObject(ViewModel)
- 
- }
- Tab("Favorite",systemImage: "heart.fill",value: 2){
- FavoriteView()
- // .environmentObject(ViewModel)
- 
- }
- Tab("Setting",systemImage: "gearshape.fill",value: 3){
- SettingView()
- 
- .environmentObject(settingVM)
- 
- }
- 
- }
- 
- .accentColor(Color.green)
- 
- 
- }
- 
- }
- 
- 
- #Preview {
- let settingVM = SettingVM()
- let tabVM = TabVM()
- NavigationTab()
- .environmentObject(settingVM)
- .environmentObject(tabVM)
- 
- }
- */
 struct TabView: View {
     let bgColor: Color = .init(white: 0.9)
     @EnvironmentObject var settingVM: SettingVM
