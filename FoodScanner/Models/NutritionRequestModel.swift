@@ -9,8 +9,8 @@ import Foundation
 struct NutritionRequest: Codable {
     let input: String
 }
-struct SelectedIngredient: Identifiable {
-    let id = UUID()
+struct SelectedIngredient: Identifiable,Codable {
+    let id : UUID
     let name: String
     var amount: String
     var unit: MeasurementUnit

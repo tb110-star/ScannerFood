@@ -15,7 +15,7 @@ struct FoodScannerApp: App {
     private var scanViewModel = ScanViewModel()
     @StateObject var  settingVM = SettingVM()
     @State private var authViewModel : AuthViewModel
-   
+  
     init() {
         FirebaseConfiguration.shared.setLoggerLevel(.min)
         FirebaseApp.configure()
@@ -25,12 +25,14 @@ struct FoodScannerApp: App {
         WindowGroup {
             if authViewModel.isUserSignedIn {
                 ContentView()
+                    
                     .environmentObject(settingVM)
                     .environmentObject(tabVM)
                     .environment(scanViewModel)
                     .environment(authViewModel)
             } else {
                 LoginView(authViewModel: AuthViewModel())
+                  
                     .environmentObject(settingVM)
                     .environmentObject(tabVM)
                     .environment(scanViewModel)

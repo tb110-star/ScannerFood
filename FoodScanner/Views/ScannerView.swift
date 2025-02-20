@@ -17,6 +17,8 @@ struct ScanView: View {
     
     
     var body: some View {
+        ZStack {
+          Color.timberwolf.ignoresSafeArea()
         VStack {
             PhotosPicker("Select From Gallery", selection: $selectedItem, matching: .images)
                 .padding()
@@ -130,15 +132,15 @@ struct ScanView: View {
             }
         }
         .onChange(of: selectedItem) { oldItem, newItem in
-                    Task {
-                        if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                            viewModel.setSelectedImage(data)
-                        }
-                    }
+            Task {
+                if let data = try? await newItem?.loadTransferable(type: Data.self) {
+                    viewModel.setSelectedImage(data)
                 }
+            }
+        }
     }
     
-    
+}
     
 }
 

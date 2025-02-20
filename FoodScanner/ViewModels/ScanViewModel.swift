@@ -6,6 +6,8 @@
 //
 import SwiftUI
 import SwiftData
+import FirebaseFirestore
+
 @MainActor
 @Observable
 final class ScanViewModel {
@@ -20,6 +22,7 @@ final class ScanViewModel {
     var nutritionResults: NutritionResponse?
     private let nutritionRepository = NutritionRepository()
     var manuallyAddedFoodItems:[SelectedIngredient] = []
+    private let db = Firestore.firestore()
 // loading image from Gallery and upload it to get public url
     func setSelectedImage(_ data: Data) {
         self.selectedUIImage = UIImage(data: data)
@@ -110,6 +113,7 @@ final class ScanViewModel {
                   let nutritionData = try await nutritionRepository.getNutritionInfo(requestData)
                   self.nutritionResults = nutritionData
                   print("✅ Nutrition data received successfully: \(nutritionData)")
+                   saveHistory()
               } catch {
                   self.errorMessage = "❌ Failed to fetch nutrition data: \(error.localizedDescription)"
                   print("❌ Error fetching nutrition data: \(error.localizedDescription)")
@@ -118,5 +122,29 @@ final class ScanViewModel {
               isLoading = false
           }
       }
+    
+    private func saveHistory() {
+           guard let imageUrl = selectedImageURL, let nutritionData = nutritionResults else {
+               print("⚠️ Cannot save history: Missing image URL or nutrition data.")
+               return
+           }
+
+           let historyRef = db.collection("userHistory")
+           let historyEntry = HistoryModel(
+               timestamp: Date(),
+               imageUrl: imageUrl,  // ✅ استفاده از لینک Imgbb
+               finalIngredients: selectedIngredients,  // ✅ ذخیره‌ی مواد اولیه‌ی ویرایش‌شده
+               nutritionData: nutritionData,  // ✅ ذخیره‌ی اطلاعات تغذیه‌ای
+               isFavorite: false  // ✅ در ابتدا مقدار false است، بعداً قابل تغییر است
+           )
+
+           do {
+               try historyRef.addDocument(from: historyEntry)
+               print("✅ History saved successfully!")
+           } catch {
+               print("❌ Failed to save history: \(error.localizedDescription)")
+           }
+       }
+
 
 }

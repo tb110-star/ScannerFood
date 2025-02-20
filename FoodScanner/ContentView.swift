@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    
     @EnvironmentObject var settingVM: SettingVM
     @EnvironmentObject var tabVM: TabVM
     @Environment(AuthViewModel.self) private var authViewModel
