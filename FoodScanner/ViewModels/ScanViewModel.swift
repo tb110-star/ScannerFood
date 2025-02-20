@@ -20,7 +20,7 @@ final class ScanViewModel {
     var nutritionResults: NutritionResponse?
     private let nutritionRepository = NutritionRepository()
     var manuallyAddedFoodItems:[SelectedIngredient] = []
-
+// loading image from Gallery and upload it to get public url
     func setSelectedImage(_ data: Data) {
         self.selectedUIImage = UIImage(data: data)
         print("✅ Image selected from gallery.")
@@ -38,7 +38,7 @@ final class ScanViewModel {
             self.isLoading = false
         }
     }
-    
+    // call the API With url and catch the resault
     func recognizeFood() {
         Task {
             guard let imageUrl = selectedImageURL else {
@@ -65,12 +65,13 @@ final class ScanViewModel {
         }
     }
     
-
+// user can add the ingrediant by self
      func addCustomIngredient(name: String, amount: String, unit: MeasurementUnit) {
          let newIngredient = SelectedIngredient(name: name, amount: amount, unit: unit,isChecked: true)
          selectedIngredients.append(newIngredient)
          print("✅ Manually added item: \(name) - \(amount) \(unit.rawValue)")
      }
+    // selecting the relevent recognised ingrediant
    func toggleIngredientSelection(ingredient: RecognizedIngredient) {
             if let index = selectedIngredients.firstIndex(where: { $0.name == ingredient.name }) {
                 selectedIngredients.remove(at: index)
@@ -79,17 +80,19 @@ final class ScanViewModel {
                 selectedIngredients.append(newIngredient)
             }
         }
+    // creating a list to sent to nutrition API
     func generateFinalList() {
             finalIngredients = selectedIngredients.filter { $0.isChecked || !$0.amount.isEmpty }
             print("✅ Final List Ready: \(finalIngredients.count) items")
         }
-  
+  // generating an acceptable format string of list to sent to API
     func createNutritionInput() -> String {
            let descriptions = finalIngredients
                .map { "\($0.amount) \($0.unit.rawValue) of \($0.name)" }
            
            return descriptions.joined(separator: ", ")
        }
+    // recieving data from Nutrition API
     func fetchNutritionData() {
         generateFinalList()
           Task {
