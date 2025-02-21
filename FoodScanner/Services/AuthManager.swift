@@ -11,7 +11,6 @@ import FirebaseAuth
 @Observable
 
 final class AuthManager {
-//actor AuthManager {
     static let shared = AuthManager()
     private init() {
         checkAuth()

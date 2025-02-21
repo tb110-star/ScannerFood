@@ -10,7 +10,7 @@ struct NutritionRequest: Codable {
     let input: String
 }
 struct SelectedIngredient: Identifiable,Codable {
-    let id : UUID
+    var id : UUID = UUID()
     let name: String
     var amount: String
     var unit: MeasurementUnit

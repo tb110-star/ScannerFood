@@ -6,7 +6,7 @@
 //
 
 import Foundation
-struct RecognizedIngredient: Identifiable, Codable {
+struct RecognizedIngredient: Identifiable, Codable,Equatable {
     let id: String
     let name: String
     let confidence: Double

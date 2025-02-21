@@ -7,14 +7,21 @@
 
 import Foundation
 import FirebaseFirestore
+@Observable
 
-final class FireStorerepository {
-    private let db = Firestore.firestore().collection("Image detection")
-    func insertHistory(recognizedItems: [String], imageUrl: String, timestamp: Date = Date()) async throws {
+final class FireStoreManeger {
+    static let fireStoreManager = FireStoreManeger()
+    private var db : CollectionReference{
+        Firestore.firestore().collection("Image detection")
+    }
+    
+    func insertHistory(nutritionData: NutritionResponse,recognizedItems:[SelectedIngredient],imageUrl: String, timestamp: Date = Date()) async throws {
           let historyEntry: [String: Any] = [
               "timestamp": Timestamp(date: timestamp),
+              "NutritionData": nutritionData,
               "recognizedItems": recognizedItems,
               "imageUrl": imageUrl
+              
           ]
           
           do {
