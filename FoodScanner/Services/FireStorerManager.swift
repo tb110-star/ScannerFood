@@ -15,20 +15,20 @@ final class FireStoreManeger {
         Firestore.firestore().collection("Image detection")
     }
     
-    func insertHistory(nutritionData: NutritionResponse,recognizedItems:[SelectedIngredient],imageUrl: String, timestamp: Date = Date()) async throws (Error){
+    func insertHistory(nutritionData: NutritionResponse,finalIngredients:[SelectedIngredient],imageUrl: String, timestamp: Date = Date()) async throws (Error){
         guard let creatorID = await AuthManager.shared.userID else {
             throw .notAuthenticated
         }
-          let historyEntry: [String: Any] = [
-              "timestamp": Timestamp(date: timestamp),
-              "NutritionData": nutritionData,
-              "recognizedItems": recognizedItems,
-              "imageUrl": imageUrl
-              
-          ]
-        let historyDoc =  HistoryModel(timestamp: <#T##Date#>, finalIngredients: <#T##[SelectedIngredient]#>, nutritionData: <#T##NutritionResponse#>, isFavorite: <#T##Bool#>, imageUrl: <#T##String#>)
+//          let historyEntry: [String: Any] = [
+//              "timestamp": Timestamp(date: timestamp),
+//              "NutritionData": nutritionData,
+//              "recognizedItems": recognizedItems,
+//              "imageUrl": imageUrl
+//              
+//          ]
+        let historyDoc =  HistoryModel(timestamp: Date(), finalIngredients: finalIngredients, nutritionData: nutritionData, isFavorite: false, imageUrl: imageUrl, creatorID: creatorID)
           do {
-              try await db.addDocument(data: historyEntry)
+              try  db.addDocument(from: historyDoc )
               print("✅ Successfully saved recognized food items to Firestore!")
           } catch {
               print("❌ Error saving recognized food items: \(error.localizedDescription)")

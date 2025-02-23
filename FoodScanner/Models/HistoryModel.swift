@@ -14,4 +14,5 @@ struct HistoryModel: Codable, Identifiable {
     let nutritionData: NutritionResponse
     var isFavorite: Bool
     let imageUrl: String
+    var creatorID: String
 }

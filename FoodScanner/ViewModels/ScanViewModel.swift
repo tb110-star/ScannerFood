@@ -271,7 +271,7 @@ final class ScanViewModel {
                    let nutritionData = try await nutritionRepository.getNutritionInfo(requestData)
                    self.nutritionResults = nutritionData
                    print("✅ Nutrition data received successfully: \(nutritionData)")
-                   try await storeManager.insertHistory(nutritionData:nutritionData ,recognizedItems: finalIngredients, imageUrl: selectedImageURL ?? "", timestamp:Date())
+                   try await storeManager.insertHistory(nutritionData:nutritionData ,finalIngredients: finalIngredients, imageUrl: selectedImageURL ?? "", timestamp:Date())
                } catch {
                    self.errorMessage = "❌ Failed to fetch nutrition data: \(error.localizedDescription)"
                    print("❌ Error fetching nutrition data: \(error.localizedDescription)")
