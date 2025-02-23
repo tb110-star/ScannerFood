@@ -21,9 +21,10 @@ struct ScanView: View {
             ZStack {
                 Color.timberwolf.ignoresSafeArea()
                 VStack {
+/* ! Mock */      if !viewModel.isMock {
                     PhotosPicker("Select From Gallery", selection: $selectedItem, matching: .images)
                         .padding()
-                    
+                }
                     if let uiImage = viewModel.selectedUIImage {
                         Image(uiImage: uiImage)
                             .resizable()
@@ -52,74 +53,7 @@ struct ScanView: View {
                             .foregroundColor(.gray)
                             .padding()
                     }
-//                    } else {
-//                        List {
-//                            Section(header: Text("Detected Ingredients")) {
-//                                ForEach(viewModel.recognizedIngredients) { ingredient in
-//                                    HStack {
-//                                        Button(action: {
-//                                            viewModel.toggleIngredientSelection(ingredient: ingredient)
-//                                        }) {
-//                                            Image(systemName: viewModel.selectedIngredients.contains { $0.name == ingredient.name } ? "checkmark.circle.fill" : "circle")
-//                                                .foregroundColor(.blue)
-//                                        }
-//
-//                                        Text(ingredient.name)
-//                                            .font(.headline)
-//
-//                                        Spacer()
-//                                    }
-//                                }
-//                            }
-//                        }
-//                        Section(header: Text("Selected Ingredients")) {
-//                            ForEach($viewModel.selectedIngredients) { $item in
-//                                HStack {
-//                                    Text(item.name)
-//                                        .font(.headline)
-//
-//                                    Spacer()
-//
-//                                    TextField("Amount", text: $item.amount)
-//                                        .keyboardType(.decimalPad)
-//                                        .textFieldStyle(.roundedBorder)
-//                                        .frame(width: 70)
-//
-//                                    Picker("Unit", selection: $item.unit) {
-//                                        ForEach(MeasurementUnit.allCases, id: \.self) { unit in
-//                                            Text(unit.rawValue).tag(unit)
-//                                        }
-//                                    }
-//                                    .pickerStyle(.menu)
-//                                }
-//                            }
-//                        }
-//
-//                        Section(header: Text("Add Custom Ingredient")) {
-//                            HStack {
-//                                TextField("Ingredient Name", text: $newIngredientName)
-//                                    .textFieldStyle(.roundedBorder)
-//
-//                                TextField("Amount", text: $newIngredientAmount)
-//                                    .keyboardType(.decimalPad)
-//                                    .textFieldStyle(.roundedBorder)
-//                                    .frame(width: 70)
-//
-//                                Picker("Unit", selection: $newIngredientUnit) {
-//                                    ForEach(MeasurementUnit.allCases, id: \.self) { unit in
-//                                        Text(unit.rawValue).tag(unit)
-//                                    }
-//                                }
-//                                .pickerStyle(.menu)
-//
-//                                Button("Add") {
-//                                    viewModel.addCustomIngredient(name: newIngredientName, amount: newIngredientAmount, unit: newIngredientUnit)
-//                                    newIngredientName = ""
-//                                    newIngredientAmount = ""
-//                                }
-//                            }
-//                        }
-//                    }
+                   
                     
                     Button("Get Nutrition Info") {
                         Task {
@@ -158,7 +92,7 @@ struct ScanView: View {
 }
 
 #Preview {
-    ScanView(viewModel: ScanViewModel())
+    ScanView(viewModel: ScanViewModel(isMock: true))
 }//
 /*
 import SwiftUI

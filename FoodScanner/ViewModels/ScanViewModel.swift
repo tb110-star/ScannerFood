@@ -177,12 +177,32 @@ final class ScanViewModel {
      var manuallyAddedFoodItems:[SelectedIngredient] = []
      private let storeManager = FireStoreManeger()
      
-     
-     
+     // /* Mock
+    let isMock: Bool
+        
+       
+        init(isMock: Bool = false) {
+            self.isMock = isMock
+            if isMock {
+                self.recognizedIngredients = mockRecognizedIngredients
+                self.nutritionResults = mockNutritionResponse
+                self.selectedUIImage = UIImage(named: "MockImage")
+            }
+        }
+        
+    // */ Mock
      
  // loading image from Gallery and upload it to get public url
     
      func setSelectedImage(_ data: Data) {
+         // /* Mock
+         if isMock {
+                    print("⚠️ Using mock image instead of real selection.")
+                    self.selectedUIImage = UIImage(named: "MockImage")
+                    return
+                }
+
+         // */ Mock
          self.selectedUIImage = UIImage(data: data)
          print("✅ Image selected from gallery.")
          
@@ -201,6 +221,13 @@ final class ScanViewModel {
      }
      // call the API With url and catch the resault
      func recognizeFood() {
+         // /* Mock
+         if isMock {
+                    print("⚠️ Using mock data for food recognition.")
+                    self.recognizedIngredients = mockRecognizedIngredients
+                    return
+                }
+         // */ Mock
          Task {
              guard let imageUrl = selectedImageURL else {
                  
@@ -255,6 +282,13 @@ final class ScanViewModel {
         }
      // recieving data from Nutrition API
      func fetchNutritionData() {
+         // /* Mock
+         if isMock {
+                    print("⚠️ Using mock data for nutrition API.")
+                    self.nutritionResults = mockNutritionResponse
+                    return
+                }
+         // */ Mock
          generateFinalList()
            Task {
                let inputText = createNutritionInput()

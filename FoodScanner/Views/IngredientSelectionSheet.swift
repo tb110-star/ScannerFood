@@ -99,8 +99,7 @@ struct IngredientSelectionSheet: View {
 }
 
 #Preview {
-    // IngredientSelectionSheet(viewModel: <#ScanViewModel#>, isPresented: <#Binding<Bool>#>)
-}
+    IngredientSelectionSheet(viewModel: ScanViewModel(isMock: true), isPresented: .constant(true))}
 //
 //struct IngredientSelectionSheet: View {
 //    @Bindable var viewModel: ScanViewModel
