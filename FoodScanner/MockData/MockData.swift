@@ -13,7 +13,10 @@ import Foundation
 let mockRecognizedIngredients: [RecognizedIngredient] = [
     RecognizedIngredient(id: "1", name: "Tomato", confidence: 0.95),
     RecognizedIngredient(id: "2", name: "Lettuce", confidence: 0.89),
-    RecognizedIngredient(id: "3", name: "Chicken", confidence: 0.99)
+    RecognizedIngredient(id: "3", name: "Chicken", confidence: 0.99),
+    RecognizedIngredient(id: "4", name: "Pasta", confidence: 0.94),
+    RecognizedIngredient(id: "5", name: "Cheese", confidence: 0.83),
+    RecognizedIngredient(id: "6", name: "Meat", confidence: 0.93)
 ]
 
 let mockNutritionResponse = NutritionResponse(

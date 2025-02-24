@@ -30,7 +30,7 @@ enum Tab: Int, Identifiable, CaseIterable, Comparable {
         lhs.rawValue < rhs.rawValue
     }
     
-    case home, scann, favorite, setting
+    case home, scann, favorite //, setting
     
     internal var id: Int { rawValue }
     
@@ -42,8 +42,8 @@ enum Tab: Int, Identifiable, CaseIterable, Comparable {
             return "barcode.viewfinder"
         case .favorite:
             return "heart.fill"
-        case .setting:
-            return "gearshape.fill"
+//        case .setting:
+//            return "gearshape.fill"
         }
     }
     
@@ -55,8 +55,8 @@ enum Tab: Int, Identifiable, CaseIterable, Comparable {
             return "Scann"
         case .favorite:
             return "Favorite"
-        case .setting:
-            return "Setting"
+//        case .setting:
+//            return "Setting"
         }
     }
     
@@ -68,8 +68,9 @@ enum Tab: Int, Identifiable, CaseIterable, Comparable {
             return .pink
         case .favorite:
             return .orange
-        case .setting:
-            return .teal
+//        case .setting:
+//            return .teal
         }
     }
 }
+

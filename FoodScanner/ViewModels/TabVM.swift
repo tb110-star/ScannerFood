@@ -8,5 +8,5 @@
 import SwiftUI
 
 class TabVM: ObservableObject {
-    @Published var selectedTab: Tab = .home
+    @Published var selectedTab: Tab = .scann
 }

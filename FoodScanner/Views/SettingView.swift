@@ -13,7 +13,7 @@ struct SettingView: View {
         
        NavigationStack {
         ZStack {
-          Color.timberwolf.ignoresSafeArea()
+            Color.timberwolf.ignoresSafeArea(.all)
         ScrollView {
         VStack(alignment:.leading) {
             Section(

@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+
 struct TabView: View {
     let bgColor: Color = .init(white: 0.9)
     @EnvironmentObject var settingVM: SettingVM
@@ -16,14 +17,17 @@ struct TabView: View {
 
     var body: some View {
         ZStack{
+            Color.timberwolf.ignoresSafeArea(.all)
+
             TabContentView()
-                .padding(.bottom,80)
+                .padding(.bottom,75)
             VStack{
                 Spacer()
                 TabsLayoutView()
                     .padding()
                     .background(
-                        Capsule()                        .fill(.white.opacity(0.3))
+                        Capsule()
+                            .fill(.ultraThinMaterial)
                     )
                     .frame(height: 70)
                     .shadow(radius: 30)
@@ -44,8 +48,8 @@ struct TabContentView : View {
 
         case .favorite:
             FavoriteView()
-        case .setting:
-            SettingView()
+//        case .setting:
+//            SettingView()
             
         }
     }
