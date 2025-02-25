@@ -187,6 +187,9 @@ final class ScanViewModel {
                 self.recognizedIngredients = mockRecognizedIngredients
                 self.nutritionResults = mockNutritionResponse
                 self.selectedUIImage = UIImage(named: "MockImage")
+                self.selectedIngredients = mockRecognizedIngredients.map { ingredient in
+                            SelectedIngredient(name: ingredient.name, amount: "100", unit: .gram, isChecked: true)
+                        }
             }
         }
         

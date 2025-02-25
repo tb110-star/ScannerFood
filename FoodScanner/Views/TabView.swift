@@ -25,10 +25,10 @@ struct TabView: View {
                 TabsLayoutView()
                     .padding()
                     .background(
-                        Capsule()
+                        RoundedRectangle(cornerRadius: 15)
                             .fill(Color.white.opacity(0.5))
                             .background(.ultraThinMaterial)
-                            .blur(radius: 8)
+                            .blur(radius: 10)
                     )
                     .frame(height: 70)
                     .shadow(radius: 30)
@@ -49,7 +49,7 @@ struct TabContentView : View {
         case .home:
             HomeView()
         case .scann:
-           ScanView(viewModel: ScanViewModel(isMock: true))
+            ScanView(viewModel: ScanViewModel(isMock: true))
 
         case .favorite:
             FavoriteView()
