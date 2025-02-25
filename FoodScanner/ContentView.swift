@@ -12,9 +12,10 @@ struct ContentView: View {
     @EnvironmentObject var settingVM: SettingVM
     @EnvironmentObject var tabVM: TabVM
     @Environment(AuthViewModel.self) private var authViewModel
-     var viewModel = ScanViewModel()
+    
     var body: some View {
       
+      //  TabView(viewModel: ScanViewModel())
         TabView()
         .font(.system(size: settingVM.selectedFontSize.size))
     }
@@ -24,7 +25,7 @@ struct ContentView: View {
     let settingVM = SettingVM()
     let tabVM = TabVM()
     
-    ContentView(viewModel: ScanViewModel(isMock: true))
+    ContentView()
         .environmentObject(settingVM)
         .environmentObject(tabVM)
         .environment(AuthViewModel())

@@ -97,7 +97,7 @@ struct IngredientSelectionSheet: View {
                                 }
                                 .listRowInsets(EdgeInsets())
                             }
-                            
+                            .padding(.vertical)
 
                         }
                             .scrollContentBackground(.hidden)

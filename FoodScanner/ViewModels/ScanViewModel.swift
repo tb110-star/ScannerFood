@@ -178,7 +178,7 @@ final class ScanViewModel {
      private let storeManager = FireStoreManeger()
      
      // /* Mock
-    let isMock: Bool
+     let isMock: Bool 
         
        
         init(isMock: Bool = false) {

@@ -13,25 +13,30 @@ struct TabView: View {
     let bgColor: Color = .init(white: 0.9)
     @EnvironmentObject var settingVM: SettingVM
     @EnvironmentObject var tabVM: TabVM
-     var viewModel = ScanViewModel()
-
+     //var viewModel : ScanViewModel
     var body: some View {
         ZStack{
             Color.timberwolf.ignoresSafeArea(.all)
 
             TabContentView()
-                .padding(.bottom,75)
+                .padding(.bottom,50)
             VStack{
                 Spacer()
                 TabsLayoutView()
                     .padding()
                     .background(
                         Capsule()
-                            .fill(.ultraThinMaterial)
+                            .fill(Color.white.opacity(0.5))
+                            .background(.ultraThinMaterial)
+                            .blur(radius: 8)
                     )
                     .frame(height: 70)
                     .shadow(radius: 30)
+                   .padding(.bottom, -2)
+                    .padding()
+
             }
+            .ignoresSafeArea(edges: .bottom)
         }
         
          }
@@ -44,7 +49,7 @@ struct TabContentView : View {
         case .home:
             HomeView()
         case .scann:
-           ScanView(viewModel: ScanViewModel())
+           ScanView(viewModel: ScanViewModel(isMock: true))
 
         case .favorite:
             FavoriteView()
@@ -134,6 +139,7 @@ fileprivate struct TabsLayoutView: View {
     let settingVM = SettingVM()
     let tabVM = TabVM()
     
+    //TabView(viewModel: ScanViewModel(isMock: true))
     TabView()
         .environmentObject(settingVM)
         .environmentObject(tabVM)
