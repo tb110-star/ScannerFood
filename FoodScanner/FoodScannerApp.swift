@@ -5,54 +5,17 @@
 //  Created by tarlan bakhtiari on 04.02.25.
 //
 
-import SwiftUI
-import SwiftData
-import FirebaseCore
-
-//@main
-//struct FoodScannerApp: App {
-//    @StateObject var  tabVM = TabVM()
-//    private var scanViewModel = ScanViewModel()
-//    @StateObject var  settingVM = SettingVM()
-//    @State private var authViewModel : AuthViewModel
-//  
-//    init() {
-//        FirebaseConfiguration.shared.setLoggerLevel(.min)
-//        FirebaseApp.configure()
-//        authViewModel = AuthViewModel()
-//    }
-//    var body: some Scene {
-//        WindowGroup {
-//            if authViewModel.isUserSignedIn {
-//                ContentView()
-//                    
-//                    .environmentObject(settingVM)
-//                    .environmentObject(tabVM)
-//                    .environment(scanViewModel)
-//                    .environment(authViewModel)
-//            } else {
-//                LoginView(authViewModel: AuthViewModel())
-//                  
-//                    .environmentObject(settingVM)
-//                    .environmentObject(tabVM)
-//                    .environment(scanViewModel)
-//                    .environment(authViewModel)
-//            }
-//        }
-//        .modelContainer(for:DataJSONCach.self)
-//    }
-//}
 
   import SwiftUI
   import FirebaseCore
 
   @main
   struct FoodScannerApp: App {
-      @StateObject var tabVM = TabVM()
-      private var scanViewModel = ScanViewModel()
-      @StateObject var settingVM = SettingVM()
-      @State var authViewModel : AuthViewModel
-      @State var fireStoreManager = FireStoreManeger()
+       private var tabVM = TabVM()
+       private var scanViewModel = ScanViewModel()
+       private var settingVM = SettingVM()
+      private var authViewModel : AuthViewModel
+      private var fireStoreManager = FireStoreManeger()
   init() {
       FirebaseConfiguration.shared.setLoggerLevel(.min)
       FirebaseApp.configure()
@@ -63,17 +26,22 @@ import FirebaseCore
       var body: some Scene {
           WindowGroup {
               if authViewModel.isUserSignedIn {
-                  ContentView()
-                      
+                  TabsView()
+                      .font(.system(size: settingVM.selectedFontSize.size))
+                      .environment(tabVM)
+                     .environment(scanViewModel)
+                     .environment(settingVM)
+
+                     .environment(authViewModel)
   } else {
                   LoginView(authViewModel: authViewModel)
-                     
+                   .environment(settingVM)
+                    .environment(tabVM)
+                 .environment(scanViewModel)
+                  .environment(authViewModel)
               }
           }
-          .environmentObject(settingVM)
-          .environmentObject(tabVM)
-          .environment(scanViewModel)
-          .environment(authViewModel)
+          
         //  .environment(fireStoreManager)
       }
   }

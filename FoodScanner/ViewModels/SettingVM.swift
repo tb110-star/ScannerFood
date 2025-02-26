@@ -8,18 +8,15 @@
 import Foundation
 import SwiftUI
 import SwiftData
+@MainActor
+@Observable
+class SettingVM {
+ var isDarkMode = false
+ var isDataSendingEnabled = false
+ var selectedFontSizeRaw: String = FontSizeOption.medium.rawValue
 
-class SettingVM: ObservableObject {
-    @Published  var isDarkMode = false
-    @Published  var isDataSendingEnabled = false
-    @Published var selectedFontSize: FontSizeOption {
-        didSet {
-            UserDefaults.standard.set(selectedFontSize.rawValue, forKey: "fontSizePreference")
-        }
-    }
-    
-    init() {
-        let fontSizeRawValue = UserDefaults.standard.string(forKey: "fontSizePreference") ?? FontSizeOption.medium.rawValue
-        self.selectedFontSize = FontSizeOption(rawValue: fontSizeRawValue) ?? .medium
+    var selectedFontSize: FontSizeOption {
+        get { FontSizeOption(rawValue: selectedFontSizeRaw) ?? .medium }
+        set { selectedFontSizeRaw = newValue.rawValue }
     }
 }

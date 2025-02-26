@@ -9,11 +9,12 @@
 import SwiftUI
 
 
-struct TabView: View {
+struct TabsView: View {
     let bgColor: Color = .init(white: 0.9)
-    @EnvironmentObject var settingVM: SettingVM
-    @EnvironmentObject var tabVM: TabVM
-     //var viewModel : ScanViewModel
+    @Environment(TabVM.self) private var tabVM
+    @Environment(ScanViewModel.self) private var scanViewModel
+    @Environment(SettingVM.self) private var settingVM
+    @Environment(AuthViewModel.self) private var authViewModel
     var body: some View {
         ZStack{
             Color.timberwolf.ignoresSafeArea(.all)
@@ -33,7 +34,7 @@ struct TabView: View {
                     .frame(height: 70)
                     .shadow(radius: 30)
                    .padding(.bottom, -2)
-                    .padding()
+                   .padding(.vertical)
 
             }
             .ignoresSafeArea(edges: .bottom)
@@ -42,15 +43,15 @@ struct TabView: View {
          }
 }
 struct TabContentView : View {
-    @EnvironmentObject var tabVM: TabVM
-    
+    @Environment(TabVM.self) private var tabVM
+    @Environment(ScanViewModel.self) private var scanViewModel
     var body: some View{
         switch tabVM.selectedTab {
         case .home:
             HomeView()
         case .scann:
-            ScanView(viewModel: ScanViewModel(isMock: true))
-
+            ScanView(viewModel: ScanViewModel(isMock: false))
+             
         case .favorite:
             FavoriteView()
 //        case .setting:
@@ -60,7 +61,7 @@ struct TabContentView : View {
     }
 }
 fileprivate struct TabsLayoutView: View {
-    @EnvironmentObject var tabVM: TabVM
+    @Environment(TabVM.self) private var tabVM
     @Namespace var namespace
     var body: some View {
         HStack {
@@ -72,7 +73,7 @@ fileprivate struct TabsLayoutView: View {
 }
  struct TabButton: View {
     let tab: Tab
-    @EnvironmentObject var tabVM: TabVM
+     @Environment(TabVM.self) private var tabVM
     var namespace: Namespace.ID
     @State private var selectedOffset: CGFloat = 0
     @State private var rotationAngle: CGFloat = 0
@@ -89,14 +90,18 @@ fileprivate struct TabsLayoutView: View {
             } else {
                 rotationAngle -= 360
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                selectedOffset = 0
-                if tab < tabVM.selectedTab {
-                    rotationAngle += 720
-                } else {
-                    rotationAngle -= 720
-                }
-            }
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+//                selectedOffset = 0
+//                if tab < tabVM.selectedTab {
+//                    rotationAngle += 720
+//                } else {
+//                    rotationAngle -= 720
+//                }
+//            }
+            Task {
+                            try? await Task.sleep(for: .milliseconds(300))
+                            await updateAnimation()
+                        }
         } label: {
             ZStack {
                 if isSelected {
@@ -129,19 +134,26 @@ fileprivate struct TabsLayoutView: View {
         }
         .buttonStyle(.plain)
     }
-    
+     private func updateAnimation() async {
+             selectedOffset = 0
+             if tab < tabVM.selectedTab {
+                 rotationAngle += 720
+             } else {
+                 rotationAngle -= 720
+             }
+         }
     private var isSelected: Bool {
         tabVM.selectedTab == tab
     }
 }
 
 #Preview {
-    let settingVM = SettingVM()
-    let tabVM = TabVM()
     
     //TabView(viewModel: ScanViewModel(isMock: true))
-    TabView()
-        .environmentObject(settingVM)
-        .environmentObject(tabVM)
-    
+    TabsView()
+        .environment(SettingVM())
+        .environment(TabVM())
+        .environment(AuthViewModel())
+        .environment(ScanViewModel())
+
 }

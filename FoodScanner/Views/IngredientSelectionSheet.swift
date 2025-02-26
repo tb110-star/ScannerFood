@@ -19,7 +19,7 @@ struct IngredientSelectionSheet: View {
     var body: some View {
         NavigationStack {
             ZStack{
-                Color.timberwolf.ignoresSafeArea()
+                Color.timberwolf.opacity(0.6).ignoresSafeArea()
                 
                 VStack(spacing: 16) {
                     

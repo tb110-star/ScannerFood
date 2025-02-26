@@ -6,7 +6,8 @@
 //
 
 import SwiftUI
-
-class TabVM: ObservableObject {
-    @Published var selectedTab: Tab = .scann
+@MainActor
+ @Observable
+final class TabVM {
+     var selectedTab: Tab = .scann
 }
