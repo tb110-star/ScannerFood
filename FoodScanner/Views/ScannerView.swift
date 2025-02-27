@@ -148,7 +148,7 @@ struct ScanView: View {
             }
             .toolbar {
                 NavigationLink {
-                    SettingView(settingVM: settingVM)
+                    SettingView(settingVM: settingVM, authViewModel: AuthViewModel())
                     
                 } label: {
                     Image(systemName: "gear")

@@ -12,6 +12,7 @@ import SwiftUI
 struct TabsView: View {
     let bgColor: Color = .init(white: 0.9)
     @Environment(\.colorScheme) var colorScheme
+    @Environment(FavoriteVM.self) private var favoriteVM
 
     @Environment(TabVM.self) private var tabVM
     @Environment(ScanViewModel.self) private var scanViewModel
@@ -31,7 +32,8 @@ struct TabsView: View {
                         RoundedRectangle(cornerRadius: 15)
                             .fill(Color.white.opacity(0.5))
                             .background(.ultraThinMaterial)
-                            .blur(radius: 10)
+           
+            .blur(radius: 10)
                     )
                     .frame(height: 70)
                     .shadow(radius: 30)
@@ -55,7 +57,7 @@ struct TabContentView : View {
             ScanView(viewModel: ScanViewModel(isMock: false))
              
         case .favorite:
-            FavoriteView()
+            FavoriteView(favoriteVM: FavoriteVM())
 //        case .setting:
 //            SettingView()
             
@@ -157,5 +159,7 @@ fileprivate struct TabsLayoutView: View {
         .environment(TabVM())
         .environment(AuthViewModel())
         .environment(ScanViewModel())
+        .environment(FavoriteVM())
+
 
 }

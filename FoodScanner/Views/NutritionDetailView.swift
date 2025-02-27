@@ -9,17 +9,19 @@ import SwiftUI
 
 struct NutritionDetailView: View {
     @Bindable var viewModel: ScanViewModel
-
     var body: some View {
         ZStack {
             Color.white.opacity(0.1).ignoresSafeArea()
             
             VStack {
-                Text("Nutrition Information")
-                    .font(.title)
-                    .bold()
-                    .padding(.top, 10)
-                
+                HStack{
+                    Text("Nutrition Information")
+                        .font(.title2)
+                        .bold()
+                        .padding(.top, 10)
+
+                }
+                .padding(.horizontal)
                 if let nutrition = viewModel.nutritionResults {
                     List {
                         VStack{
@@ -33,7 +35,7 @@ struct NutritionDetailView: View {
                             NutritionRow(title: "Total Carbs", value: "\(nutrition.totalCarbohydrate) g", icon: "🍞")
                             NutritionRow(title: "Dietary Fiber", value: "\(nutrition.dietaryFiber) g", icon: "🌿")
                             NutritionRow(title: "Total Sugars", value: "\(nutrition.totalSugars) g", icon: "🍬")
-                            NutritionRow(title: "Added Sugars", value: "\(nutrition.addedSugars) g", icon: "➕")
+                          //  NutritionRow(title: "Added Sugars", value: "\(nutrition.addedSugars) g", icon: "➕")
                         }
                         .listRowBackground(Color.clear)
                     }

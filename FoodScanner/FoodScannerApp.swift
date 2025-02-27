@@ -12,6 +12,8 @@
   @main
   struct FoodScannerApp: App {
        private var tabVM = TabVM()
+      private var favoriteVM = FavoriteVM()
+
        private var scanViewModel = ScanViewModel()
        private var settingVM = SettingVM()
       private var authViewModel : AuthViewModel
@@ -28,6 +30,8 @@
               if authViewModel.isUserSignedIn {
                   TabsView()
                       .font(.system(size: settingVM.selectedFontSize.size))
+                      .environment(favoriteVM)
+
                       .environment(tabVM)
                      .environment(scanViewModel)
                      .environment(settingVM)
@@ -40,6 +44,8 @@
                     .environment(tabVM)
                  .environment(scanViewModel)
                   .environment(authViewModel)
+                  .environment(favoriteVM)
+
               }
           }
           

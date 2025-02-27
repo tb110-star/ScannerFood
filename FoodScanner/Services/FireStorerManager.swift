@@ -19,13 +19,7 @@ final class FireStoreManeger {
         guard let creatorID = await AuthManager.shared.userID else {
             throw .notAuthenticated
         }
-//          let historyEntry: [String: Any] = [
-//              "timestamp": Timestamp(date: timestamp),
-//              "NutritionData": nutritionData,
-//              "recognizedItems": recognizedItems,
-//              "imageUrl": imageUrl
-//              
-//          ]
+
         let historyDoc =  HistoryModel(timestamp: Date(), finalIngredients: finalIngredients, nutritionData: nutritionData, isFavorite: false, imageUrl: imageUrl, creatorID: creatorID)
           do {
               try  db.addDocument(from: historyDoc )
@@ -35,10 +29,53 @@ final class FireStoreManeger {
               throw .failedDeleting(reason: error.localizedDescription)
           }
       }
-  
+    @MainActor
+    func observe(onChange: @escaping ([HistoryModel]) -> Void) {
+        guard let creatorID = AuthManager.shared.userID else { return }
+        db.whereField("creatorID", isEqualTo:creatorID).addSnapshotListener(includeMetadataChanges: false) { snapshot, error in
+                    if error != nil { return }
+                    guard let snapshot = snapshot else { return }
+                    
+                    let histories = snapshot.documents.compactMap { document in
+                        try? document.data(as: HistoryModel.self)
+                    }
+                    
+            onChange(histories)
+                }
+    }
+    func findAll(byCreator id: String) async throws(Error) -> [HistoryModel] {
+        do {
+            let documents = try await db.whereField("creatorID", isEqualTo: id).getDocuments()
+            let his = documents.documents.compactMap { document in
+                try? document.data(as: HistoryModel.self)
+            }
+            return his
+        } catch {
+            throw .findAllFailed(reason: error.localizedDescription)
+        
+        }
+    }
+    func updateIsFavorite(by id: HistoryModel.ID, isFavorite: Bool) async throws(Error) {
+        guard let id = id else { throw .noHistoryID
+        }
+        let updateData = ["isFavorite": isFavorite]
+        do {
+            try await db.document(id).updateData(updateData)
+            print("✅ Successfully updated favorite status.")
+        } catch {
+            throw .failedUpdating(reason: error.localizedDescription)
+        }
+    }
+    func delete(by id: String) async throws(Error) {
+        do {
+            try await db.document(id).delete()
+        } catch {
+            throw .failedDeleting(reason: error.localizedDescription)
+        }
+    }
     enum Error: LocalizedError {
         case notAuthenticated
-        case noSnippetID
+        case noHistoryID
         case failedCreation(reason: String)
         case failedFinding(reason: String)
         case failedDeleting(reason: String)
@@ -49,18 +86,18 @@ final class FireStoreManeger {
             switch self {
             case .notAuthenticated:
                 "You are not authenticated."
-            case .noSnippetID:
-                "The snippet does not exist yet."
+            case .noHistoryID:
+                "The history does not exist yet."
             case .failedCreation(let reason):
-                "The snippet could not be created: \(reason)"
+                "The history could not be created: \(reason)"
             case .failedFinding(let reason):
-                "The snippet could not be found: \(reason)"
+                "The history could not be found: \(reason)"
             case .failedDeleting(let reason):
-                "The snippet could not be deleted: \(reason)"
+                "The history could not be deleted: \(reason)"
             case .failedUpdating(let reason):
-                "The snippet could not be updated: \(reason)"
+                "The history could not be updated: \(reason)"
             case .findAllFailed(let reason):
-                "Your snippet could not be loaded: \(reason)"
+                "Your history could not be loaded: \(reason)"
             }
         }
     }
