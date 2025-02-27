@@ -31,6 +31,7 @@
                       .environment(tabVM)
                      .environment(scanViewModel)
                      .environment(settingVM)
+                     .preferredColorScheme(settingVM.isDarkMode ? .dark : .light)
 
                      .environment(authViewModel)
   } else {

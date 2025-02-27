@@ -18,10 +18,10 @@ struct IngredientSelectionSheet: View {
     
     var body: some View {
         NavigationStack {
-            ZStack{
+            ZStack(alignment: .leading){
                 Color.timberwolf.opacity(0.6).ignoresSafeArea()
                 
-                VStack(spacing: 16) {
+                VStack(alignment: .leading) {
                     
                     // ScrollView(.vertical, showsIndicators: false)
                     let columns = [
@@ -30,30 +30,41 @@ struct IngredientSelectionSheet: View {
                         GridItem(.flexible(), spacing: 6)
                         
                     ]
-                    LazyVGrid(columns: columns, spacing: 6)    {
-                        //   HStack {
-                        ForEach(viewModel.recognizedIngredients) { ingredient in
-                            Button(action: {
-                                viewModel.toggleIngredientSelection(ingredient: ingredient)
-                            }) {
-                                Text(ingredient.name)
-                                    .padding(.vertical, 5)                          .frame(minWidth: 80, maxWidth: .infinity)
-                                    .lineLimit(1)      .background(viewModel.selectedIngredients.contains { $0.name == ingredient.name } ? Color.pinkLavender.opacity(0.5) : Color.white.opacity(0.5))
-                                    .foregroundColor(.primary)
-                                    .clipShape(Capsule())
-                                    .overlay(
-                                        Capsule()
-                                            .stroke(viewModel.selectedIngredients.contains { $0.name == ingredient.name } ? Color.pinkLavender : Color.white, lineWidth: 0.5)
-                                    )
+                        Text("Detected ingrediant")
+                            .font(.headline)
+                            .padding(.horizontal)
+                            .padding(.top)
+                       
+                        ScrollView(.vertical, showsIndicators: true){
+                            LazyVGrid(columns: columns, spacing: 6) {
+                               
+                                ForEach(viewModel.recognizedIngredients) { ingredient in
+                                    Button(action: {
+                                        viewModel.toggleIngredientSelection(ingredient: ingredient)
+                                    }) {
+                                        Text(ingredient.name)
+                                            .padding(.vertical, 5)
+                                            .frame(minWidth: 80, maxWidth: .infinity)
+                                            .lineLimit(1)
+                                            .background(viewModel.selectedIngredients.contains { $0.name == ingredient.name } ? Color.pinkLavender.opacity(0.5) : Color.white.opacity(0.5))
+                                            .foregroundColor(.primary)
+                                            .clipShape(Capsule())
+                                            .overlay(
+                                                Capsule()
+                                                    .stroke(viewModel.selectedIngredients.contains { $0.name == ingredient.name } ? Color.pinkLavender : Color.white, lineWidth: 0.5)
+                                            )
+                                    }
+                                }
+                                
+                                
+                                
                             }
+                            .padding(.horizontal)
                             
                         }
-                        .padding(.horizontal)
-                        
-                        // }
-                    }
                     
-                  //  ScrollView(.vertical, showsIndicators: false) {
+                        .frame(maxHeight: 140)
+                
                         VStack {
                             List{
                             ForEach($viewModel.selectedIngredients) { $item in
@@ -78,11 +89,11 @@ struct IngredientSelectionSheet: View {
                                     .pickerStyle(SegmentedPickerStyle())
                                     
                                 }
-                                .padding(.vertical)
+                                .padding(.vertical,3)
                                 .listRowBackground(Color.clear)
 
                                 .padding(.horizontal, 12)
-                                .padding(.vertical, 8)
+                                .padding(.vertical, 5)
                                 .frame(maxWidth:.infinity)
                                 
                                 .background(Color.manatee.opacity(0.5))
@@ -97,7 +108,7 @@ struct IngredientSelectionSheet: View {
                                 }
                                 .listRowInsets(EdgeInsets())
                             }
-                            .padding(.vertical)
+                            .padding(.vertical,5)
 
                         }
                             .scrollContentBackground(.hidden)
@@ -127,7 +138,7 @@ struct IngredientSelectionSheet: View {
                             newIngredientAmount = ""
                         }
                         .font(.title2)
-                        .frame(width: 35, height: 35)       .background(Color.pink.opacity(0.4))   .foregroundColor(.white)
+                        .frame(width: 35, height: 30)       .background(Color.pink.opacity(0.4))   .foregroundColor(.white)
                         .clipShape(Circle())
                         .shadow(radius: 4)
                         //                        .buttonStyle(.borderedProminent)
@@ -135,7 +146,8 @@ struct IngredientSelectionSheet: View {
                         //                        .foregroundColor(Color.black)
                     }
                     .frame(maxWidth:.infinity)
-                    .padding()
+                    .padding(.horizontal)
+                    .padding(.vertical,5)
                     .background(.ultraThinMaterial)
                     .clipShape(RoundedRectangle(cornerRadius: 15))
                     .overlay(
@@ -144,17 +156,21 @@ struct IngredientSelectionSheet: View {
                     )
                     .shadow(radius: 5)
                     .padding(.horizontal)
-                    Spacer()
+                  //  Spacer()
                     Button("Save") {
                         isPresented = false
                     }
                     .font(.title2)
-                    .frame(width: 300, height: 40)       .background(Color.pink.opacity(0.4))   .foregroundColor(.white)
+                    .frame(width: 300, height: 40)
+                    .background(Color.pink.opacity(0.4))
+                    .foregroundColor(.white)
                     .clipShape(Capsule())
                     .shadow(radius: 4)
+                    .frame(maxWidth: .infinity, alignment: .center)
                 }
             }
             .navigationTitle("Ingrediant")
+            .toolbar(.hidden, for: .navigationBar)
             
         }
     }

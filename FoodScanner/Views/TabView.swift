@@ -11,6 +11,8 @@ import SwiftUI
 
 struct TabsView: View {
     let bgColor: Color = .init(white: 0.9)
+    @Environment(\.colorScheme) var colorScheme
+
     @Environment(TabVM.self) private var tabVM
     @Environment(ScanViewModel.self) private var scanViewModel
     @Environment(SettingVM.self) private var settingVM

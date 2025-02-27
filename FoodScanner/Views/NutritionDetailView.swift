@@ -45,6 +45,7 @@ struct NutritionDetailView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 15))
                     .shadow(radius: 5)
                     .padding()
+                    
                 } else {
                     Text("No Data Available")
                         .foregroundColor(.gray)

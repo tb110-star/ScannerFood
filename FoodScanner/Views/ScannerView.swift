@@ -9,12 +9,10 @@ import SwiftUI
 import PhotosUI
 
 struct ScanView: View {
+    @Environment(SettingVM.self) private var settingVM
+    // @Environment(\.colorScheme) var colorScheme
     @State private var selectedItem: PhotosPickerItem? = nil
     @Bindable var viewModel: ScanViewModel
-   // @State private var isIngredientSheetPresented = false
-   // @State private var isDetectEnabled = false
-    //@State private var isNutritionEnabled = false
-    
     @State private var isScanOptionsPresented = false
     @State private var isGallerySelected = false
     @State private var isCameraSelected = false
@@ -28,90 +26,82 @@ struct ScanView: View {
                 
                 Color.timberwolf.ignoresSafeArea()
                 ScrollView {
-                VStack() {
-                    
-                    imagePreview(viewModel: viewModel, selectedImage: selectedImage)
-                        .padding(.top, 20)
-                    //Spacer()
-                    HStack{
-                        Button(action: {
-                            Task {
-                                viewModel.recognizeFood()
-                                
-                            }
-                        }) {
-                            Text("Detect")
-                                .font(.headline)
-                                .frame(width: 120, height: 45)
-                                .background(viewModel.isDetectEnabled ? Color.manatee : Color.gray.opacity(0.5))
-                                .foregroundColor(.white)
-                                .clipShape(Capsule())
-                                .shadow(radius: 5)
-                        }
-                        .scaleEffect(viewModel.isDetectEnabled ? 1.0 : 0.95)
-                        .disabled(!viewModel.isDetectEnabled)
+                    VStack() {
                         
-                        Button(action: {
-                            isScanOptionsPresented = true
-                        }) {
-                            Image(systemName: "qrcode.viewfinder")
-                                .font(.largeTitle)
-                                .foregroundColor(.white)
-                                .frame(width: 70, height: 70)
-                                .background(Color.pinkLavender.gradient)
-                                .clipShape(Circle())
-                                .shadow(radius: 5)
-                        }
-                        
-                        .confirmationDialog("Choose an option", isPresented: $isScanOptionsPresented, titleVisibility: .visible) {
-                            Button("📷 Camera") {
-                                isCameraSelected = true
-                            }
-                            
-                            Button("🖼 Gallery") {
-                                isGallerySelected = true
-                            }
-                            
-                            Button("Cancel", role: .cancel) { }
-                        }
-                        Button(action: {
-                            Task {
-                                if viewModel.nutritionResults == nil {
-                                     viewModel.fetchNutritionData()
+                        imagePreview(viewModel: viewModel, selectedImage: selectedImage)
+                            .padding(.top, 20)
+                        //Spacer()
+                        HStack{
+                            Button(action: {
+                                Task {
+                                    viewModel.recognizeFood()
+                                    
                                 }
-                                isNutritionSheetPresented = true
+                            }) {
+                                Text("Detect")
+                                    .font(.headline)
+                                    .frame(width: 120, height: 45)
+                                    .background(viewModel.isDetectEnabled ? Color.manatee : Color.gray.opacity(0.5))
+                                    .foregroundColor(.white)
+                                    .clipShape(Capsule())
+                                    .shadow(radius: 5)
                             }
-                        }) {
-                            Text("Nutrition")
-                                .font(.headline)
-                                .frame(width: 120, height: 45)
-                                .background(viewModel.isNutritionEnabled ? Color.manatee : Color.gray.opacity(0.5))
-                                .foregroundColor(.white)
-                                .clipShape(Capsule())
-                                .shadow(radius: 5)
+                            .scaleEffect(viewModel.isDetectEnabled ? 1.0 : 0.95)
+                            .disabled(!viewModel.isDetectEnabled)
+                            
+                            Button(action: {
+                                isScanOptionsPresented = true
+                            }) {
+                                Image(systemName: "qrcode.viewfinder")
+                                    .font(.largeTitle)
+                                    .foregroundColor(.white)
+                                    .frame(width: 70, height: 70)
+                                    .background(Color.pinkLavender.gradient)
+                                    .clipShape(Circle())
+                                    .shadow(radius: 5)
+                            }
+                            
+                            .confirmationDialog("Choose an option", isPresented: $isScanOptionsPresented, titleVisibility: .visible) {
+                                Button("📷 Camera") {
+                                    isCameraSelected = true
+                                }
+                                
+                                Button("🖼 Gallery") {
+                                    isGallerySelected = true
+                                }
+                                
+                                Button("Cancel", role: .cancel) { }
+                            }
+                            Button(action: {
+                                Task {
+                                    if viewModel.nutritionResults == nil {
+                                        viewModel.fetchNutritionData()
+                                    }
+                                    isNutritionSheetPresented = true
+                                }
+                            }) {
+                                Text("Nutrition")
+                                    .font(.headline)
+                                    .frame(width: 120, height: 45)
+                                    .background(viewModel.isNutritionEnabled ? Color.manatee : Color.gray.opacity(0.5))
+                                    .foregroundColor(.white)
+                                    .clipShape(Capsule())
+                                    .shadow(radius: 5)
+                            }
+                            .scaleEffect(viewModel.isNutritionEnabled ? 1.0 : 0.95)
+                            .disabled(!viewModel.isNutritionEnabled)
                         }
-                        .scaleEffect(viewModel.isNutritionEnabled ? 1.0 : 0.95)
-                        .disabled(!viewModel.isNutritionEnabled)
+                        .padding(.top)
+                        Spacer()
+                        
+                        if !viewModel.selectedIngredients.isEmpty {
+                            editedIngredientsPreview(viewModel: viewModel, isIngredientSheetPresented: $viewModel.isIngredientSheetPresented)
+                        }
+                        
                     }
-                    .padding(.top)
-                    Spacer()
-                    
-                    if !viewModel.selectedIngredients.isEmpty {
-                        editedIngredientsPreview(viewModel: viewModel, isIngredientSheetPresented: $viewModel.isIngredientSheetPresented)
-                    }
+                }
+                .navigationTitle("")
                 
-                }
-            }
-                .navigationTitle("Scan Food")
-                .toolbar{
-//                    ToolbarItem(placement: .topBarTrailing){
-//                        NavigationLink(destination: SettingView()) {
-//                                                 Image(systemName: "gearshape.fill")
-//                                                     .font(.system(size: 22, weight: .bold))
-//                                                     .foregroundColor(.gray)
-//                                             }
-//                    }
-                }
                 
                 .onChange(of: isGallerySelected, initial: false) { oldValue, newValue in
                     if newValue {
@@ -119,7 +109,7 @@ struct ScanView: View {
                         showGalleryPicker = true
                     }
                 }
-
+                
                 .onChange(of: isCameraSelected) { oldValue, newValue in
                     if newValue {
                         isCameraSelected = false
@@ -154,7 +144,17 @@ struct ScanView: View {
                         .presentationDetents([.medium, .large])   .presentationDragIndicator(.visible)
                         .presentationBackground(.ultraThinMaterial.opacity(0.4))
                 }
-
+                
+            }
+            .toolbar {
+                NavigationLink {
+                    SettingView(settingVM: settingVM)
+                    
+                } label: {
+                    Image(systemName: "gear")
+                        .font(.system(size: 22, weight: .bold))
+                        .foregroundColor(.gray)
+                }
             }
         }
     }
@@ -211,29 +211,29 @@ private func editedIngredientsPreview(viewModel: ScanViewModel, isIngredientShee
         }
         Divider()
         ScrollView(.vertical, showsIndicators: true) {
-        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
-            ForEach(viewModel.selectedIngredients) { ingredient in
-                VStack {
-                    Text(ingredient.name)
-                        .font(.subheadline)
-                        .bold()
-                    
-                    Text("\(ingredient.amount) \(ingredient.unit.rawValue)")
-                        .font(.caption)
+            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
+                ForEach(viewModel.selectedIngredients) { ingredient in
+                    VStack {
+                        Text(ingredient.name)
+                            .font(.subheadline)
+                            .bold()
+                        
+                        Text("\(ingredient.amount) \(ingredient.unit.rawValue)")
+                            .font(.caption)
+                    }
+                    //   .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.white.opacity(0.4))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    //.shadow(radius: 1)
                 }
-                //   .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color.white.opacity(0.4))
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                //.shadow(radius: 1)
+                .padding(3)
             }
-            .padding(3)
+            .padding(.horizontal,5)
+            
         }
-        .padding(.horizontal,5)
-        
-    }
         .frame(height: 200)
-
+        
     }
     .background(
         RoundedRectangle(cornerRadius: 15)
@@ -243,7 +243,7 @@ private func editedIngredientsPreview(viewModel: ScanViewModel, isIngredientShee
     )
     .cornerRadius(15)
     .padding(20)
-
+    
 }
 
 
