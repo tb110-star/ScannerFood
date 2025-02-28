@@ -45,82 +45,91 @@ struct SettingView: View {
 //                }
 //                    }
                 ScrollView {
-                VStack(alignment:.leading) {
-                    Section(
-                        header: Label("Personal Settings", systemImage: "person.fill").scaleEffect(0.9)
-                            .foregroundColor(colorScheme == .dark ? .white : .gray))
-                         {
-                                    VStack{
-                                        Toggle(isOn: $settingVM.isDarkMode) {
-                                            Text(settingVM.isDarkMode ? "Dark Mode" : "Light Mode")
-                                        }
-                                        Divider()
-                                        VStack(alignment:.leading ){
-                                            Text("Select Font size")
-                                            Spacer()
-                                            Picker("Font Size", selection: $settingVM.selectedFontSize) {
-                                                ForEach(FontSizeOption.allCases, id: \.self) { size in
-                                                    Text(size.rawValue).tag(size)
-                                                }
-                                            }
-                                            .pickerStyle(SegmentedPickerStyle())
-
+                    VStack(alignment:.leading) {
+                        Section(
+                            header: Label("Personal Settings", systemImage: "person.fill").scaleEffect(0.9)
+                                .foregroundColor(colorScheme == .dark ? .white : .gray))
+                        {
+                            VStack{
+                                Toggle(isOn: $settingVM.isDarkMode) {
+                                    Text(settingVM.isDarkMode ? "Dark Mode" : "Light Mode")
+                                }
+                                Divider()
+                                VStack(alignment:.leading ){
+                                    Text("Select Font size")
+                                    Spacer()
+                                    Picker("Font Size", selection: $settingVM.selectedFontSize) {
+                                        ForEach(FontSizeOption.allCases, id: \.self) { size in
+                                            Text(size.rawValue).tag(size)
                                         }
                                     }
-                                    .toggleStyle(SwitchToggleStyle(tint: .green))
-                                    .padding()
-                                    .background(Color.white.opacity(0.3))
-                                    .cornerRadius(12)
-
+                                    .pickerStyle(SegmentedPickerStyle())
+                                    
                                 }
-                    Divider()
-
-                    Section(
-                        header: Label("Help", systemImage: "questionmark.circle.fill").scaleEffect(0.9)
-                            .foregroundColor(colorScheme == .dark ? .white : .gray))
-                    {
-                        VStack(alignment:.leading){
-                                        Link(destination: URL(string: "https://www.google.com")!) {
-                                            HStack{
-                                                Image(systemName: "globe")
-                                                Text("Help Forum")
-                                            }
-                                        }
-                                        Divider()
-                                        Link(destination: URL(string: "tel://+4912345")!) {
-                                            HStack{
-                                                Image(systemName: "phone")
-                                                Text("Hotline")
-                                            }
-                                       }
-                                    }
-                    .foregroundColor(colorScheme == .dark ? .white : .darkGreen)
-                                    .padding()
-                                    .frame(maxWidth: .infinity,maxHeight:.infinity)
-                                    .background(Color.white.opacity(0.3))
-                                    .cornerRadius(12)
-
-                                }
-                    Section {
-                        if authViewModel.isUserSignedIn {
-                            Button(action: {
-                                authViewModel.signOut()
-                            }) {
-                                Label("Sign Out", systemImage: "arrow.right.circle.fill")
-                                    .foregroundColor(.red)
                             }
-                        } else {
-                            Button(action: {
-                                authViewModel.signIn()
-                            }) {
-                                Label("Sign In", systemImage: "person.crop.circle.fill")
-                            }
+                            .toggleStyle(SwitchToggleStyle(tint: .green))
+                            .padding()
+                            .background(Color.white.opacity(0.3))
+                            .cornerRadius(12)
+                            
                         }
-                    } header: {
-                        Label("Account", systemImage: "person.fill")
-                    }
-
+                        Divider()
+                        
+                        Section(
+                            header: Label("Help", systemImage: "questionmark.circle.fill").scaleEffect(0.9)
+                                .foregroundColor(colorScheme == .dark ? .white : .gray))
+                        {
+                            VStack(alignment:.leading){
+                                Link(destination: URL(string: "https://www.google.com")!) {
+                                    HStack{
+                                        Image(systemName: "globe")
+                                        Text("Help Forum")
+                                    }
+                                }
+                                Divider()
+                                Link(destination: URL(string: "tel://+4912345")!) {
+                                    HStack{
+                                        Image(systemName: "phone")
+                                        Text("Hotline")
+                                    }
+                                }
                             }
+                            .foregroundColor(colorScheme == .dark ? .white : .darkGreen)
+                            .padding()
+                            .frame(maxWidth: .infinity,maxHeight:.infinity)
+                            .background(Color.white.opacity(0.3))
+                            .cornerRadius(12)
+                            
+                        }
+                        Section (
+                            header: Label("Account", systemImage: "").scaleEffect(0.9)
+                                .foregroundColor(colorScheme == .dark ? .white : .gray))
+                        {
+                            VStack(alignment:.leading){
+                                if authViewModel.isUserSignedIn {
+                                    Button(action: {
+                                        authViewModel.signOut()
+                                    }) {
+                                        Label("Sign Out", systemImage: "arrow.right.circle.fill")
+                                            .foregroundColor(.red)
+                                    }
+                                } else {
+                                    Button(action: {
+                                        authViewModel.signIn()
+                                    }) {
+                                        Label("Sign In", systemImage: "person.crop.circle.fill")
+                                    }
+                                }
+                                
+                            }
+                            
+                            .foregroundColor(colorScheme == .dark ? .white : .darkGreen)
+                            .padding()
+                            .frame(maxWidth: .infinity,maxHeight:.infinity)
+                            .background(Color.white.opacity(0.3))
+                            .cornerRadius(12)
+                        }
+                    }
                 .padding()
 
                         }

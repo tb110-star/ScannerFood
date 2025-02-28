@@ -36,7 +36,7 @@ struct TabsView: View {
             .blur(radius: 10)
                     )
                     .frame(height: 70)
-                    .shadow(radius: 30)
+                    .shadow(radius: 5)
                    .padding(.bottom, -2)
                    .padding(.vertical)
 
@@ -94,14 +94,6 @@ fileprivate struct TabsLayoutView: View {
             } else {
                 rotationAngle -= 360
             }
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-//                selectedOffset = 0
-//                if tab < tabVM.selectedTab {
-//                    rotationAngle += 720
-//                } else {
-//                    rotationAngle -= 720
-//                }
-//            }
             Task {
                             try? await Task.sleep(for: .milliseconds(300))
                             await updateAnimation()
