@@ -10,6 +10,9 @@ struct SettingView: View {
         NavigationStack {
             ZStack {
                 Color.timberwolf.ignoresSafeArea(.all)
+                   // .background(.regularMaterial)
+                  //  .backgroundStyle(.tint)
+
 
             
 //                ScrollView {
@@ -111,7 +114,7 @@ struct SettingView: View {
                                         authViewModel.signOut()
                                     }) {
                                         Label("Sign Out", systemImage: "arrow.right.circle.fill")
-                                            .foregroundColor(.red)
+                                            .foregroundColor(.indigo)
                                     }
                                 } else {
                                     Button(action: {
@@ -137,10 +140,15 @@ struct SettingView: View {
                 
             }
             .navigationTitle("Setting")
+            .toolbarBackground(.ultraThinMaterial.opacity(0.5), for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+
             .preferredColorScheme(settingVM.isDarkMode ? .dark : .light)
             .font(.system(size: settingVM.selectedFontSize.size))
             .foregroundColor(colorScheme == .dark ? .timberwolf : .fontDarkGreen)
+            .toolbarColorScheme(colorScheme == .dark ?.dark : .light, for: .navigationBar)
         }
+
     }
 }
 

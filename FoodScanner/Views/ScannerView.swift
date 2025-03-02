@@ -101,7 +101,8 @@ struct ScanView: View {
                     }
                 }
                 .navigationTitle("")
-                
+                .toolbarBackground(.ultraThinMaterial.opacity(0.5), for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
                 
                 .onChange(of: isGallerySelected, initial: false) { oldValue, newValue in
                     if newValue {
@@ -167,23 +168,49 @@ private func imagePreview(viewModel: ScanViewModel, selectedImage: UIImage?) -> 
         if let uiImage = viewModel.selectedUIImage {
             Image(uiImage: uiImage)
                 .resizable()
-                .scaledToFit()
+                .scaledToFill()
                 .frame(width:350, height: 300)
                 .clipShape(RoundedRectangle(cornerRadius: 15))
                 .shadow(radius: 5)
         } else {
-            RoundedRectangle(cornerRadius: 15)
-                .fill(Color.gray.opacity(0.2))
-                .frame(width:350, height: 300)
-                .overlay(
-                    VStack {
-                        Image(systemName: "photo.on.rectangle")
-                            .font(.largeTitle)
-                            .foregroundColor(.gray)
-                        Text("No Image Selected")
-                            .foregroundColor(.gray)
-                    }
-                )
+//            RoundedRectangle(cornerRadius: 15)
+//                .fill(Color.gray.opacity(0.2))
+//                .frame(width:350, height: 300)
+//                .overlay(
+//                    VStack {
+//                        Image(systemName: "photo.on.rectangle")
+//                            .font(.largeTitle)
+//                            .foregroundColor(.gray)
+//                        Text("No Image Selected")
+//                            .foregroundColor(.gray)
+//                        
+//                    }
+//                )
+            ///
+            ZStack {
+                       RoundedRectangle(cornerRadius: 20)
+                           .fill(.ultraThinMaterial)
+                           .background(.ultraThinMaterial)
+                           .frame(width: 350, height: 300)
+                           .clipShape(RoundedRectangle(cornerRadius: 15))
+                           .overlay(
+                               VStack(spacing: 20) {
+                                   Image(systemName: "viewfinder.circle")
+                                       .font(.system(size: 80, weight: .ultraLight))
+                                       .foregroundStyle(.gray.opacity(0.6))
+                                       .shadow(radius: 5)
+
+                                   Text("No Image to Scann")
+                                       .font(.title2)
+                                       .foregroundColor(.gray.opacity(0.8))
+                                       
+                               }
+                           )
+                           .shadow(radius: 1)
+
+                   }
+               
+            ///
         }
     }
     .padding(.horizontal)
@@ -250,5 +277,6 @@ private func editedIngredientsPreview(viewModel: ScanViewModel, isIngredientShee
 
 
 #Preview {
-    ScanView(viewModel: ScanViewModel(isMock: true))
+    ScanView(viewModel: ScanViewModel(isMock: false))
+        .environment(SettingVM())
 }

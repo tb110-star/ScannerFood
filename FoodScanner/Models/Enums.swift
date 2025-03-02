@@ -65,7 +65,7 @@ enum Tab: Int, Identifiable, CaseIterable, Comparable {
         case .home:
             return .indigo
         case .scann:
-            return .pink
+            return .pinkLavenderD
         case .favorite:
             return .orange
 //        case .setting:

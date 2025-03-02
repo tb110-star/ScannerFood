@@ -29,14 +29,13 @@ struct TabsView: View {
                 TabsLayoutView()
                     .padding()
                     .background(
-                        RoundedRectangle(cornerRadius: 15)
-                            .fill(Color.white.opacity(0.5))
+                        Rectangle()
+                            .fill(Color.timberwolf.opacity(0.4))
                             .background(.ultraThinMaterial)
-           
-            .blur(radius: 10)
+                            .blur(radius: 10)
                     )
                     .frame(height: 70)
-                    .shadow(radius: 5)
+                 //   .shadow(radius: 0.1)
                    .padding(.bottom, -2)
                    .padding(.vertical)
 
@@ -102,13 +101,13 @@ fileprivate struct TabsLayoutView: View {
             ZStack {
                 if isSelected {
                     Capsule()
-                        .fill(tab.color.opacity(0.2))
+                        .fill(tab.color.opacity(0.1))
                         .matchedGeometryEffect(id: "Selected Tab", in: namespace)
                 }
                 HStack(spacing: 10) {
                     Image(systemName: tab.icon)
                         .font(.system(size: 20, weight: .semibold, design: .rounded))
-                        .foregroundColor(isSelected ? tab.color : .black.opacity(0.6))
+                        .foregroundColor(isSelected ? tab.color : .darkGreen)
                         .rotationEffect(.degrees(rotationAngle))
                         .scaleEffect(isSelected ? 1 : 0.9)
                         .animation(.easeInOut, value: rotationAngle)

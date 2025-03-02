@@ -12,6 +12,7 @@ struct FavoriteView: View {
     @State private var selectedItem: HistoryModel? = nil
     @State private var showSheet = false
     @State  var nutritionData : HistoryModel? = nil
+    @Environment(SettingVM.self) private var settingVM
 
     var body: some View {
         NavigationStack {
@@ -50,13 +51,27 @@ struct FavoriteView: View {
                     }
                 }
             }
+            .toolbar {
+                NavigationLink {
+                    SettingView(settingVM: settingVM, authViewModel: AuthViewModel())
+                    
+                } label: {
+                    Image(systemName: "gear")
+                        .font(.system(size: 22, weight: .bold))
+                        .foregroundColor(.gray)
+                }
+            }
+
             .onAppear {
                 Task {
                     await favoriteVM.fetchHistory()
                 }
                 favoriteVM.observeHistoryUpdates()
             }
-            .navigationTitle("Favorites")
+            .toolbarBackground(.ultraThinMaterial.opacity(0.5), for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .navigationTitle("")
+
             .sheet(item: $selectedItem) { selected in
                  DetailView(favoriteItem: selected)
             }
