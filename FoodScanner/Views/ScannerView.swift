@@ -173,20 +173,7 @@ private func imagePreview(viewModel: ScanViewModel, selectedImage: UIImage?) -> 
                 .clipShape(RoundedRectangle(cornerRadius: 15))
                 .shadow(radius: 5)
         } else {
-//            RoundedRectangle(cornerRadius: 15)
-//                .fill(Color.gray.opacity(0.2))
-//                .frame(width:350, height: 300)
-//                .overlay(
-//                    VStack {
-//                        Image(systemName: "photo.on.rectangle")
-//                            .font(.largeTitle)
-//                            .foregroundColor(.gray)
-//                        Text("No Image Selected")
-//                            .foregroundColor(.gray)
-//                        
-//                    }
-//                )
-            ///
+
             ZStack {
                        RoundedRectangle(cornerRadius: 20)
                            .fill(.ultraThinMaterial)

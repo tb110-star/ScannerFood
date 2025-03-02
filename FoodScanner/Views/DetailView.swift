@@ -16,7 +16,43 @@ struct DetailView: View {
             Color.white.opacity(0.1).ignoresSafeArea()
             
             VStack {
-                
+                if let url = URL(string: favoriteItem.imageUrl) {
+                    AsyncImage(url: url) { image in
+                        image.resizable()
+                            .scaledToFill()
+                            .frame(width: 300, height: 300)
+                            .clipShape(RoundedRectangle(cornerRadius: 15))
+                            .shadow(radius: 5)
+                            .padding()
+                    } placeholder: {
+                        ProgressView()
+                    }
+                }
+                ScrollView(.vertical, showsIndicators: true) {
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
+                        ForEach(favoriteItem.finalIngredients) { ingredient in
+                            VStack {
+                                Text(ingredient.name)
+                                    .font(.subheadline)
+                                    .bold()
+                                
+                                Text("\(ingredient.amount) \(ingredient.unit.rawValue)")
+                                    .font(.caption)
+                            }
+                            //   .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.white.opacity(0.4))
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            //.shadow(radius: 1)
+                        }
+                        .padding(3)
+                    }
+                    .padding(.horizontal,5)
+                    
+                }
+                .frame(height: 200)
+
+
                 List {
                     VStack{
                         NutritionRow(title: "Calories", value: "\(favoriteItem.nutritionData.calories) kcal", icon: "🔥")
@@ -32,6 +68,7 @@ struct DetailView: View {
                     }
                     .listRowBackground(Color.clear)
                 }
+                .padding()
             }
         }
     }
