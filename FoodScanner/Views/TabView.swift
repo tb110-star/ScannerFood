@@ -48,10 +48,11 @@ struct TabsView: View {
 struct TabContentView : View {
     @Environment(TabVM.self) private var tabVM
     @Environment(ScanViewModel.self) private var scanViewModel
+
     var body: some View{
         switch tabVM.selectedTab {
         case .home:
-            HomeView()
+            HomeView(favoriteVM: FavoriteVM())
         case .scann:
             ScanView(viewModel: ScanViewModel(isMock: false))
              

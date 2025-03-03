@@ -70,7 +70,7 @@ struct FavoriteView: View {
             }
             .toolbarBackground(.ultraThinMaterial.opacity(0.5), for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-            .navigationTitle("")
+           // .navigationTitle("")
 
             .sheet(item: $selectedItem) { selected in
                  DetailView(favoriteItem: selected)

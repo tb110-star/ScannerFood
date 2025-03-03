@@ -15,9 +15,30 @@ final class FavoriteVM {
     private let storeManager = FireStoreManeger()
     var historyItems: [HistoryModel] = []
     var favoriteItems: [HistoryModel] {
-           historyItems.filter { $0.isFavorite }
-       }
-     var selectedTab: Int = 0
+        historyItems.filter { $0.isFavorite }
+    }
+    var selectedTab: Int = 0
+    var targetCalories: Double = 2000
+    var todayCalories: Double = 0
+    
+    func calculateTodayCalories() {
+        let today = Calendar.current.startOfDay(for: Date())
+
+        todayCalories = historyItems
+            .filter {  $0.timestamp >= today }
+            .reduce(0) { total, item in
+                total + (Double(item.nutritionData.calories) ?? 0)
+            }
+        print("🟢 today's Calories: \(todayCalories)")
+    }
+
+    func updateData() {
+        Task {
+            await fetchHistory()
+            calculateTodayCalories()
+        }
+    }
+    
     func observeHistoryUpdates() {
         guard AuthManager.shared.isUserSignedIn else {
             print("⚠️User is not signed in. HistoryItem will not be activated.")
@@ -30,13 +51,14 @@ final class FavoriteVM {
             print(favoriteItems.isEmpty)
         }
     }
- 
+    
     func fetchHistory() async {
         do {
             guard let userID = AuthManager.shared.userID else { return }
             let fetchedItems = try await storeManager.findAll(byCreator: userID)
             historyItems = fetchedItems
             print("✅ Successfully upload histories from Firestore!")
+            calculateTodayCalories()
         } catch {
             print("❌ error to find the histoey \(error.localizedDescription)")
         }
@@ -48,6 +70,7 @@ final class FavoriteVM {
             historyItems[index].isFavorite = newValue
         }
         observeHistoryUpdates()
-
+        
     }
 }
+
