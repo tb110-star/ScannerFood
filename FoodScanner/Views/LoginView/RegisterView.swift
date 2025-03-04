@@ -9,27 +9,19 @@ import SwiftUI
 
 struct RegisterView: View {
     @Bindable var authViewModel: AuthViewModel
-    
     var body: some View {
        
-            ZStack{
-                Color.loginback.ignoresSafeArea(.all)
-               
+        ZStack(){
+            Color.loginback.ignoresSafeArea(.all)
+
                 VStack{
                     Image("login")
                         .resizable()
                         .scaledToFill()
-                        .edgesIgnoringSafeArea(.top)
-                        .frame(height:300)
-
+                       .edgesIgnoringSafeArea(.top)
+                       .frame(height:250)
                         .blur(radius: 3)
-                    ScrollView{
-                        VStack(spacing: 15) {
-                            Text("Create Account")
-                                .foregroundColor(.pinkLavenderD)
-                                .font(.largeTitle)
-                                .fontWeight(.bold)
-                            
+               
                             VStack(spacing: 15) {
                                 TextField("Email", text: $authViewModel.email)
                                     .padding(12)
@@ -45,7 +37,7 @@ struct RegisterView: View {
                                     Button(action: {
                                         authViewModel.showPassword.toggle()
                                     }) {
-                                        Image(systemName: authViewModel.showPassword ? "eye.slash.fill" : "eye.fill")
+                                        Image(systemName: authViewModel.showPassword ? "eye.slash.fill" : "eye.fill").foregroundColor(.gray)
                                     }
                                 }
                                 .padding(12)
@@ -61,7 +53,7 @@ struct RegisterView: View {
                                     Button(action: {
                                         authViewModel.showPassword.toggle()
                                     }) {
-                                        Image(systemName: authViewModel.showPassword ? "eye.slash.fill" : "eye.fill")
+                                        Image(systemName: authViewModel.showPassword ? "eye.slash.fill" : "eye.fill").foregroundColor(.gray)
                                     }
                                 }
                                 .padding(12)
@@ -78,10 +70,10 @@ struct RegisterView: View {
                                     Text("Male").tag("Male")
                                     Text("Female").tag("Female")
                                 })
-                                TextField("Occupation", text: $authViewModel.occupation)
-                                    .padding(12)
-                                    .background(.timberwolf.opacity(0.8))
-                                    .cornerRadius(10)
+//                                TextField("Occupation", text: $authViewModel.occupation)
+//                                    .padding(12)
+//                                    .background(.timberwolf.opacity(0.8))
+//                                    .cornerRadius(10)
                             }
                             .pickerStyle(SegmentedPickerStyle())
                             
@@ -99,9 +91,10 @@ struct RegisterView: View {
                                     .frame(width: 160, height: 40)
                                     .background(authViewModel.passwordsMatch ? Color.manatee : Color.gray)                    .cornerRadius(25)
                             }
+                            .padding()
                             
-                        }
-                    }
+                        //}
+                    
                     Spacer()
                     NavigationLink(destination: LoginView(authViewModel: AuthViewModel())) {
                         Text("Already have an account? Click here to log in.")

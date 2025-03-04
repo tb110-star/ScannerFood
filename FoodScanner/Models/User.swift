@@ -13,5 +13,5 @@ struct  User :Codable,Identifiable{
      var userName : String
      var birthDate : Date
      var gender : String
-     var occupation : String
+     //var occupation : String
 }

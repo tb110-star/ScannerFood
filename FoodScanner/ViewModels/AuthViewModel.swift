@@ -61,7 +61,7 @@ final class AuthViewModel {
                 try await AuthManager.shared.signUp(email: email, password: password)
                 let userID = AuthManager.shared.userID!
               //  let email = AuthManager.shared.email!
-                self.user = try await userRepository.insert(id: userID, username: name, birthDate: birthDate, gender: gender, occupation: occupation)
+                self.user = try await userRepository.insert(id: userID, username: name, birthDate: birthDate, gender: gender)
                 errorMessage = nil
             } catch {
                 errorMessage = error.localizedDescription

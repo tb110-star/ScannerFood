@@ -11,8 +11,8 @@ import FirebaseFirestore
 final class UserRepository {
     private let database = Firestore.firestore()
 
-    func insert(id: String, username: String,birthDate:Date,gender:String,occupation:String) async throws(Error) -> User {
-        let user = User(id:id , signedUpOn: .now, userName: username, birthDate: birthDate, gender: gender, occupation: occupation)
+    func insert(id: String, username: String,birthDate:Date,gender:String) async throws(Error) -> User {
+        let user = User(id:id , signedUpOn: .now, userName: username, birthDate: birthDate, gender: gender)
         
         do {
             try database.collection("users").document(id).setData(from: user)

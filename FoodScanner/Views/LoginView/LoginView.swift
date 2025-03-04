@@ -17,11 +17,12 @@ struct LoginView: View {
             ZStack{
                 Color.loginback.ignoresSafeArea(.all)
 
-            VStack() {
+            VStack{
                 Image("login")
                     .resizable()
-                    .scaledToFit()
-                   .edgesIgnoringSafeArea(.all)
+                    .scaledToFill()
+                   .edgesIgnoringSafeArea(.top)
+                   .frame(height:270)
                     .blur(radius: 3)
                 Text("Food Scanner")
                     .padding(.bottom)
@@ -42,7 +43,7 @@ struct LoginView: View {
                         Button(action: {
                             authViewModel.showPassword.toggle()
                         }) {
-                            Image(systemName: authViewModel.showPassword ? "eye.slash.fill" : "eye.fill")
+                            Image(systemName: authViewModel.showPassword ? "eye.slash.fill" : "eye.fill").foregroundColor(.gray)
                         }
                     }
                     .padding(12)
