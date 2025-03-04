@@ -169,7 +169,13 @@
                isLoading = false
            }
        }
-    
+     func deleteFromSelectedItems(ingredientID: UUID) {
+            guard let index = selectedIngredients.firstIndex(where: { $0.id == ingredientID }) else {
+                print("⚠️ Ingredient not found!")
+                return
+            }
+            selectedIngredients.remove(at: index)
+        }
 
  }
 

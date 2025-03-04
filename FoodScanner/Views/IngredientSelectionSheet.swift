@@ -100,7 +100,9 @@ struct IngredientSelectionSheet: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                                 .swipeActions(edge: .trailing) {
                                     Button(role: .destructive) {
-                                        viewModel.selectedIngredients.removeAll { $0.id == item.id }
+                                        Task {
+                                      viewModel.deleteFromSelectedItems(ingredientID: item.id)
+                                                }
                                     } label: {
                                         Label("Delete", systemImage: "trash")
                                     }
