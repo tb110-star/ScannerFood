@@ -57,6 +57,7 @@ struct SettingView: View {
                                 Toggle(isOn: $settingVM.isDarkMode) {
                                     Text(settingVM.isDarkMode ? "Dark Mode" : "Light Mode")
                                 }
+                                .toggleStyle(SwitchToggleStyle(tint: .pinkLavender))
                                 Divider()
                                 VStack(alignment:.leading ){
                                     Text("Select Font size")
@@ -114,7 +115,7 @@ struct SettingView: View {
                                         authViewModel.signOut()
                                     }) {
                                         Label("Sign Out", systemImage: "arrow.right.circle.fill")
-                                            .foregroundColor(.indigo)
+                                            .foregroundColor(.pinkLavenderD)
                                     }
                                 } else {
                                     Button(action: {

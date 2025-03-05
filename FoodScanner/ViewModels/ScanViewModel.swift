@@ -25,7 +25,8 @@
      private let nutritionRepository = NutritionRepository()
      var manuallyAddedFoodItems:[SelectedIngredient] = []
      private let storeManager = FireStoreManeger()
-     
+     var showError: Bool = false
+
      // /* Mock
      let isMock: Bool 
         
@@ -86,6 +87,7 @@
                  
                  errorMessage = "No Image Selected!"
                  print("❌ No image URL found!")
+                 showError = true
                  return
              }
              
@@ -102,6 +104,7 @@
              } catch {
                  errorMessage = error.localizedDescription
                  print("❌ Error during food recognition: \(error.localizedDescription)")
+                 showError = true
              }
              
              isLoading = false
@@ -164,6 +167,7 @@
                } catch {
                    self.errorMessage = "❌ Failed to fetch nutrition data: \(error.localizedDescription)"
                    print("❌ Error fetching nutrition data: \(error.localizedDescription)")
+                   showError = true
                }
 
                isLoading = false

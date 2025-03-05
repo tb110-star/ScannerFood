@@ -35,7 +35,7 @@ struct ScanView: View {
                             Button(action: {
                                 Task {
                                     viewModel.recognizeFood()
-                                    
+
                                 }
                             }) {
                                 Text("Detect")
@@ -92,6 +92,20 @@ struct ScanView: View {
                             .disabled(!viewModel.isNutritionEnabled)
                         }
                         .padding(.top)
+                        if viewModel.isLoading {
+                            VStack {
+                                ProgressView()
+                                    .progressViewStyle(CircularProgressViewStyle(tint:.white.opacity(0.5)))
+                                    .scaleEffect(3)
+                                    .padding()
+                                Text("loading...")
+                                    .font(.headline)
+                                    .foregroundColor(.white)
+                            }
+                            .padding()
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+                          }
                         Spacer()
                         
                         if !viewModel.selectedIngredients.isEmpty {
@@ -99,6 +113,11 @@ struct ScanView: View {
                         }
                         
                     }
+                    .alert("Error", isPresented: $viewModel.showError, actions: {
+                        Button("OK", role: .cancel) { }
+                    }, message: {
+                        Text("Oops! Something went wrong. Please refresh and try again.")
+                    })
                 }
                 .navigationTitle("")
                 .toolbarBackground(.ultraThinMaterial.opacity(0.5), for: .navigationBar)
@@ -142,7 +161,8 @@ struct ScanView: View {
                 }
                 .sheet(isPresented: $isNutritionSheetPresented) {
                     NutritionDetailView(viewModel: viewModel)
-                        .presentationDetents([.medium, .large])   .presentationDragIndicator(.visible)
+                        .presentationDetents([.medium, .large])
+                        .presentationDragIndicator(.visible)
                         .presentationBackground(.ultraThinMaterial.opacity(0.4))
                 }
                 

@@ -18,6 +18,7 @@ import SwiftUICore
 final class AuthViewModel {
     var user: User?
     var errorMessage: String?
+    var showError: Bool = false
     var email: String = ""
     var password: String = ""
     var confirmPassword = ""
@@ -62,7 +63,7 @@ final class AuthViewModel {
                 let userID = AuthManager.shared.userID!
               //  let email = AuthManager.shared.email!
                 self.user = try await userRepository.insert(id: userID, username: name, birthDate: birthDate, gender: gender)
-                errorMessage = nil
+                errorMessage = "E-Mail or Password is not correct! "
             } catch {
                 errorMessage = error.localizedDescription
                 print(error.localizedDescription)
@@ -77,8 +78,11 @@ final class AuthViewModel {
                 let userID = AuthManager.shared.userID!
                 user = try await userRepository.find(by: userID)
                 errorMessage = nil
+                showError = false
             } catch {
                 errorMessage = error.localizedDescription
+                print("❌ username or password is wrong!")
+                showError = true
             }
         }
     }

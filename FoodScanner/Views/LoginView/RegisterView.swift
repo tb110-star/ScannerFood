@@ -15,61 +15,69 @@ struct RegisterView: View {
             Color.loginback.ignoresSafeArea(.all)
 
                 VStack{
-                    Image("login")
+                    Image("login3")
                         .resizable()
-                        .scaledToFill()
-                       .edgesIgnoringSafeArea(.top)
-                       .frame(height:250)
-                        .blur(radius: 3)
+                        .scaledToFit()
+                   //    .edgesIgnoringSafeArea(.top)
+                       .frame(height:280)
+                        .blur(radius: 2)
                
-                            VStack(spacing: 15) {
-                                TextField("Email", text: $authViewModel.email)
-                                    .padding(12)
-                                    .background(.timberwolf.opacity(0.8))
-                                    .cornerRadius(10)
-                                
-                                HStack {
-                                    if authViewModel.showPassword {
-                                        TextField("Password", text:$authViewModel.password)
-                                    } else {
-                                        SecureField("Password(six or more characters)", text: $authViewModel.password)
-                                    }
-                                    Button(action: {
-                                        authViewModel.showPassword.toggle()
-                                    }) {
-                                        Image(systemName: authViewModel.showPassword ? "eye.slash.fill" : "eye.fill").foregroundColor(.gray)
-                                    }
-                                }
-                                .padding(12)
-                                .background(.timberwolf.opacity(0.8))
-                                .cornerRadius(10)
-                                
-                                HStack {
-                                    if authViewModel.showPassword {
-                                        TextField("Confirm Password", text:$authViewModel.confirmPassword)
-                                    } else {
-                                        SecureField("Confirm Password", text: $authViewModel.confirmPassword)
-                                    }
-                                    Button(action: {
-                                        authViewModel.showPassword.toggle()
-                                    }) {
-                                        Image(systemName: authViewModel.showPassword ? "eye.slash.fill" : "eye.fill").foregroundColor(.gray)
-                                    }
-                                }
-                                .padding(12)
-                                .background(.timberwolf.opacity(0.8))
-                                .cornerRadius(10)
-                                
-                                
-                                TextField("Name", text: $authViewModel.name)
-                                    .padding(12)
-                                    .background(.timberwolf.opacity(0.8))
-                                    .cornerRadius(10)
-                                DatePicker("Birthdate", selection: $authViewModel.birthDate, displayedComponents: .date)
-                                Picker("Gender", selection: $authViewModel.gender, content: {
-                                    Text("Male").tag("Male")
-                                    Text("Female").tag("Female")
-                                })
+                    VStack(spacing: 15) {
+                        TextField("Email", text: $authViewModel.email)
+                            .padding(12)
+                            .background(.timberwolf.opacity(0.8))
+                            .cornerRadius(10)
+                        
+                        HStack {
+                            if authViewModel.showPassword {
+                                TextField("Password", text:$authViewModel.password)
+                            } else {
+                                SecureField("Password(six or more characters)", text: $authViewModel.password)
+                            }
+                            Button(action: {
+                                authViewModel.showPassword.toggle()
+                            }) {
+                                Image(systemName: authViewModel.showPassword ? "eye.slash.fill" : "eye.fill").foregroundColor(.gray)
+                            }
+                        }
+                        .padding(12)
+                        .background(.timberwolf.opacity(0.8))
+                        .cornerRadius(10)
+                        
+                        HStack {
+                            if authViewModel.showPassword {
+                                TextField("Confirm Password", text:$authViewModel.confirmPassword)
+                            } else {
+                                SecureField("Confirm Password", text: $authViewModel.confirmPassword)
+                            }
+                            Button(action: {
+                                authViewModel.showPassword.toggle()
+                            }) {
+                                Image(systemName: authViewModel.showPassword ? "eye.slash.fill" : "eye.fill").foregroundColor(.gray)
+                            }
+                        }
+                        .padding(12)
+                        .background(.timberwolf.opacity(0.8))
+                        .cornerRadius(10)
+                        
+                        
+                        TextField("Name", text: $authViewModel.name)
+                            .padding(12)
+                            .background(.timberwolf.opacity(0.8))
+                            .cornerRadius(10)
+                        VStack{
+                        DatePicker("Birthdate", selection: $authViewModel.birthDate, displayedComponents: .date)
+                        //  .accentColor(.pinkLavenderD)
+                            .tint(.pinkLavenderD)
+                        Picker("Gender", selection: $authViewModel.gender, content: {
+                            Text("Male").tag("Male")
+                            Text("Female").tag("Female")
+                        })
+                    }
+                        .padding(12)
+                        .background(.ultraThinMaterial.opacity(0.3))
+                            .cornerRadius(10)
+                            
 //                                TextField("Occupation", text: $authViewModel.occupation)
 //                                    .padding(12)
 //                                    .background(.timberwolf.opacity(0.8))

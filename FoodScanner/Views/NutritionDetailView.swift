@@ -21,6 +21,7 @@ struct NutritionDetailView: View {
                         .padding(.top, 10)
 
                 }
+                
                 .padding(.horizontal)
                 if let nutrition = viewModel.nutritionResults {
                     List {
@@ -39,6 +40,7 @@ struct NutritionDetailView: View {
                         }
                         .listRowBackground(Color.clear)
                     }
+                    .scrollIndicators(.visible)
                     .scrollContentBackground(.hidden)
                     .background(Color.white.opacity(0.5))
 
@@ -49,9 +51,18 @@ struct NutritionDetailView: View {
                     .padding()
                     
                 } else {
-                    Text("No Data Available")
-                        .foregroundColor(.gray)
-                        .padding()
+                    VStack {
+//                        ProgressView()
+//                            .progressViewStyle(CircularProgressViewStyle(tint:.pinkLavender.opacity(0.5)))
+//                            .scaleEffect(3)
+//                            .padding()
+                        Text("Data is loading...")
+                            .font(.headline)
+                            .foregroundColor(.pinkLavender)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+
                 }
                 
                 Spacer()

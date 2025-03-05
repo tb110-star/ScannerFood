@@ -18,12 +18,12 @@ struct LoginView: View {
                 Color.loginback.ignoresSafeArea(.all)
 
             VStack{
-                Image("login")
+                Image("login3")
                     .resizable()
-                    .scaledToFill()
-                   .edgesIgnoringSafeArea(.top)
-                   .frame(height:270)
-                    .blur(radius: 3)
+                    .scaledToFit()
+                 //   .edgesIgnoringSafeArea(.top)
+                   .frame(height:300)
+                    .blur(radius: 2)
                 Text("Food Scanner")
                     .padding(.bottom)
                     .foregroundColor(.pinkLavenderD)
@@ -87,6 +87,12 @@ struct LoginView: View {
                 
                 
             }
+            .alert("Error Log in", isPresented: $authViewModel.showError, actions: {
+                Button("OK", role: .cancel) { }
+            }, message: {
+                Text("E-Mail or Password is not correct!")
+            })
+
         }
     }
        }
