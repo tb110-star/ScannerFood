@@ -6,13 +6,17 @@
 
 
 import SwiftUI
+import TipKit
 
 struct FavoriteView: View {
     @Bindable var favoriteVM : FavoriteVM
     @State private var selectedItem: HistoryModel? = nil
+    @State private var selectedItemtoDelet: HistoryModel? = nil
     @State private var showSheet = false
     @State  var nutritionData : HistoryModel? = nil
     @Environment(SettingVM.self) private var settingVM
+    @State private var showingDeleteAlert = false
+    let onDelete: DeleteTip = .init()
 
     var body: some View {
         NavigationStack {
@@ -39,8 +43,24 @@ struct FavoriteView: View {
                     .padding(.top, 10)
                     
                     if favoriteVM.selectedTab == 1 {
+
                         List(favoriteVM.historyItems, id: \..id) { item in
                             historyRow(for: item)
+                        }
+                        .popoverTip(
+                            onDelete
+                        )
+                        
+                        .alert("Are you sure you want to delete this item?", isPresented: $showingDeleteAlert) {
+                            Button("Delete", role: .destructive) {
+                                guard let history = selectedItemtoDelet else {
+                                            print("❌ Error: No item selected for deletion")
+                                            return
+                                        }
+                            print("🟢 Deleting item with ID: \(history.id ?? "No ID")")
+                            favoriteVM.deleteHistory(history)
+                            }
+                            Button("Cancel", role: .cancel) { }
                         }
                         .listStyle(.plain)
                     } else {
@@ -81,6 +101,7 @@ struct FavoriteView: View {
     
     @ViewBuilder
     private func historyRow(for item: HistoryModel) -> some View {
+        VStack{
         Button {
             selectedItem = item
             showSheet = true
@@ -114,8 +135,20 @@ struct FavoriteView: View {
                 Image(systemName: "chevron.right")
                     .foregroundColor(.gray)
             }
+            
             .padding(.vertical, 5)
             .listRowBackground(Color.clear)
+        }
+    }
+        .swipeActions{
+            Button(role:.destructive) {
+                selectedItemtoDelet = item
+
+                showingDeleteAlert = true
+            } label: {
+                Label("Delete", systemImage: "trash")
+            }
+            
         }
         .listRowBackground(Color.clear)
 

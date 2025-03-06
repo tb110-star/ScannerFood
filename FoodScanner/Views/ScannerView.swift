@@ -7,7 +7,7 @@
 
 import SwiftUI
 import PhotosUI
-
+import TipKit
 struct ScanView: View {
     @Environment(SettingVM.self) private var settingVM
     // @Environment(\.colorScheme) var colorScheme
@@ -20,6 +20,7 @@ struct ScanView: View {
     @State private var showCameraPicker = false
     @State private var selectedImage: UIImage?
     @State private var isNutritionSheetPresented = false
+ 
     var body: some View {
         NavigationStack {
             ZStack {
@@ -35,7 +36,7 @@ struct ScanView: View {
                             Button(action: {
                                 Task {
                                     viewModel.recognizeFood()
-
+                                    
                                 }
                             }) {
                                 Text("Detect")
@@ -46,11 +47,18 @@ struct ScanView: View {
                                     .clipShape(Capsule())
                                     .shadow(radius: 5)
                             }
+                            .popoverTip(
+                                viewModel.onDetectButtton
+                            )
+                            
                             .scaleEffect(viewModel.isDetectEnabled ? 1.0 : 0.95)
                             .disabled(!viewModel.isDetectEnabled)
                             
+                            
+                            
                             Button(action: {
                                 isScanOptionsPresented = true
+                                viewModel.onScannButton.invalidate(reason: .actionPerformed)
                             }) {
                                 Image(systemName: "qrcode.viewfinder")
                                     .font(.largeTitle)
@@ -60,6 +68,9 @@ struct ScanView: View {
                                     .clipShape(Circle())
                                     .shadow(radius: 5)
                             }
+                            .popoverTip(
+                                viewModel.onScannButton
+                            )
                             
                             .confirmationDialog("Choose an option", isPresented: $isScanOptionsPresented, titleVisibility: .visible) {
                                 Button("📷 Camera") {
@@ -88,6 +99,9 @@ struct ScanView: View {
                                     .clipShape(Capsule())
                                     .shadow(radius: 5)
                             }
+                            .popoverTip(
+                                viewModel.onNutritionButton
+                            )
                             .scaleEffect(viewModel.isNutritionEnabled ? 1.0 : 0.95)
                             .disabled(!viewModel.isNutritionEnabled)
                         }
@@ -104,8 +118,8 @@ struct ScanView: View {
                             }
                             .padding()
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-                          }
+                            
+                        }
                         Spacer()
                         
                         if !viewModel.selectedIngredients.isEmpty {
@@ -156,7 +170,9 @@ struct ScanView: View {
                         .onDisappear {
                             if !viewModel.selectedIngredients.isEmpty {
                                 viewModel.isNutritionEnabled = true
+                                
                             }
+                            
                         }
                 }
                 .sheet(isPresented: $isNutritionSheetPresented) {
@@ -179,6 +195,7 @@ struct ScanView: View {
             }
         }
     }
+
 }
 
 @MainActor
@@ -193,30 +210,30 @@ private func imagePreview(viewModel: ScanViewModel, selectedImage: UIImage?) -> 
                 .clipShape(RoundedRectangle(cornerRadius: 15))
                 .shadow(radius: 5)
         } else {
-
+            
             ZStack {
-                       RoundedRectangle(cornerRadius: 20)
-                           .fill(.ultraThinMaterial)
-                           .background(.ultraThinMaterial)
-                           .frame(width: 350, height: 300)
-                           .clipShape(RoundedRectangle(cornerRadius: 15))
-                           .overlay(
-                               VStack(spacing: 20) {
-                                   Image(systemName: "viewfinder.circle")
-                                       .font(.system(size: 80, weight: .ultraLight))
-                                       .foregroundStyle(.gray.opacity(0.6))
-                                       .shadow(radius: 5)
-
-                                   Text("No Image to Scann")
-                                       .font(.title2)
-                                       .foregroundColor(.gray.opacity(0.8))
-                                       
-                               }
-                           )
-                           .shadow(radius: 1)
-
-                   }
-               
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(.ultraThinMaterial)
+                    .background(.ultraThinMaterial)
+                    .frame(width: 350, height: 300)
+                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                    .overlay(
+                        VStack(spacing: 20) {
+                            Image(systemName: "viewfinder.circle")
+                                .font(.system(size: 80, weight: .ultraLight))
+                                .foregroundStyle(.gray.opacity(0.6))
+                                .shadow(radius: 5)
+                            
+                            Text("No Image to Scann")
+                                .font(.title2)
+                                .foregroundColor(.gray.opacity(0.8))
+                            
+                        }
+                    )
+                    .shadow(radius: 1)
+                
+            }
+            
             ///
         }
     }

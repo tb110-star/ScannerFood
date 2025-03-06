@@ -8,7 +8,7 @@
 
   import SwiftUI
   import FirebaseCore
-
+import TipKit
   @main
   struct FoodScannerApp: App {
        private var tabVM = TabVM()
@@ -29,6 +29,10 @@
           WindowGroup {
               if authViewModel.isUserSignedIn {
                   TabsView()
+                      .task {
+                          try? Tips.resetDatastore()
+                          try? Tips.configure()
+                      }
                       .font(.system(size: settingVM.selectedFontSize.size))
                       .environment(favoriteVM)
 

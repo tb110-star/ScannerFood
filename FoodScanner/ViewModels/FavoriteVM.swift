@@ -20,7 +20,7 @@ final class FavoriteVM {
     var selectedTab: Int = 0
     var targetCalories: Double = 2000
     var todayCalories: Double = 0
-    
+    var errorMessage: String?
     func calculateTodayCalories() {
         let today = Calendar.current.startOfDay(for: Date())
 
@@ -72,5 +72,25 @@ final class FavoriteVM {
         observeHistoryUpdates()
         
     }
+    func deleteHistory(_ historyItem: HistoryModel) {
+            guard let id = historyItem.id else {
+                   errorMessage = "Invalid history ID"
+                print("❌ Error deleting id: \(errorMessage as Any)")
+                   return
+               }
+            Task {
+                do {
+                    try await storeManager.delete(by: id)
+                    
+                    print("deleting")
+                } catch {
+                    errorMessage = error.localizedDescription
+                    print(errorMessage as Any)
+                    print("❌ Error deleting : \(errorMessage as Any)")
+
+
+                }
+            }
+        }
 }
 

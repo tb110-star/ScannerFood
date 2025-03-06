@@ -68,8 +68,13 @@ final class FireStoreManeger {
     }
     func delete(by id: String) async throws(Error) {
         do {
+            print("🟡 Deleting document with ID: \(id)")
+
             try await db.document(id).delete()
+            print("✅ History successfully deleted from Firestore!")
         } catch {
+            print("❌ Error deleting from FireStore")
+
             throw .failedDeleting(reason: error.localizedDescription)
         }
     }

@@ -6,7 +6,7 @@
  //
  import SwiftUI
  import FirebaseFirestore
-
+ import TipKit
 @MainActor
  @Observable
  final class ScanViewModel {
@@ -26,7 +26,9 @@
      var manuallyAddedFoodItems:[SelectedIngredient] = []
      private let storeManager = FireStoreManeger()
      var showError: Bool = false
-
+     var onScannButton : ScannButtonTip = ScannButtonTip()
+     var onDetectButtton : DetectButtonTip = DetectButtonTip()
+     var onNutritionButton : NutritionButtonTip = NutritionButtonTip()
      // /* Mock
      let isMock: Bool 
         
@@ -42,7 +44,21 @@
                         }
             }
         }
-        
+     private func onDetectButton() async{
+         
+             await DetectButtonTip.detectButtonTapped.donate()
+             
+         
+         
+     }
+      func onNutritionButton2() {
+          Task{
+              await NutritionButtonTip.nutritionButtonTapped.donate()
+          }
+         
+         
+     }
+     
     // */ Mock
      
  // loading image from Gallery and upload it to get public url
@@ -65,6 +81,7 @@
                  let imageUrl = try await repository.uploadImageToImgBB(imageData: data)
                  self.selectedImageURL = imageUrl
                  isDetectEnabled = true
+                 await onDetectButton()
                  print("✅ Image uploaded: \(imageUrl)")
              } catch {
                  self.errorMessage = "❌ Image upload failed: \(error.localizedDescription)"
@@ -130,6 +147,9 @@
      func generateFinalList() {
              finalIngredients = selectedIngredients.filter { $0.isChecked || !$0.amount.isEmpty }
              print("✅ Final List Ready: \(finalIngredients.count) items")
+//         Task{
+//             await onNutritionButton()
+//         }
          }
    // generating an acceptable format string of list to sent to API
      func createNutritionInput() -> String {

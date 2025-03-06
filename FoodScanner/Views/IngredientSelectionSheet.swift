@@ -7,6 +7,7 @@
 
 
 import SwiftUI
+import TipKit
 
 struct IngredientSelectionSheet: View {
     @Bindable var viewModel: ScanViewModel
@@ -15,6 +16,7 @@ struct IngredientSelectionSheet: View {
     @State private var newIngredientName = ""
     @State private var newIngredientAmount = ""
     @State private var newIngredientUnit: MeasurementUnit = .gram
+    let onDelete: DeleteTip = .init()
     
     var body: some View {
         NavigationStack {
@@ -30,44 +32,47 @@ struct IngredientSelectionSheet: View {
                         GridItem(.flexible(), spacing: 6)
                         
                     ]
-                        Text("Detected ingrediant")
-                            .font(.headline)
-                            .padding(.horizontal)
-                            .padding(.top)
-                       
-                        ScrollView(.vertical, showsIndicators: true){
-                            LazyVGrid(columns: columns, spacing: 6) {
-                               
-                                ForEach(viewModel.recognizedIngredients) { ingredient in
-                                    Button(action: {
-                                        viewModel.toggleIngredientSelection(ingredient: ingredient)
-                                    }) {
-                                        Text(ingredient.name)
-                                            .padding(.vertical, 5)
-                                            .frame(minWidth: 80, maxWidth: .infinity)
-                                            .lineLimit(1)
-                                            .background(viewModel.selectedIngredients.contains { $0.name == ingredient.name } ? Color.pinkLavender.opacity(0.5) : Color.white.opacity(0.5))
-                                            .foregroundColor(.primary)
-                                            .clipShape(Capsule())
-                                            .overlay(
-                                                Capsule()
-                                                    .stroke(viewModel.selectedIngredients.contains { $0.name == ingredient.name } ? Color.pinkLavender : Color.white, lineWidth: 0.5)
-                                            )
-                                    }
+                    Text("Detected ingrediant")
+                        .font(.headline)
+                        .padding(.horizontal)
+                        .padding(.top)
+                    
+                    ScrollView(.vertical, showsIndicators: true){
+                        LazyVGrid(columns: columns, spacing: 6) {
+                            
+                            ForEach(viewModel.recognizedIngredients) { ingredient in
+                                Button(action: {
+                                    viewModel.toggleIngredientSelection(ingredient: ingredient)
+                                }) {
+                                    Text(ingredient.name)
+                                        .padding(.vertical, 5)
+                                        .frame(minWidth: 80, maxWidth: .infinity)
+                                        .lineLimit(1)
+                                        .background(viewModel.selectedIngredients.contains { $0.name == ingredient.name } ? Color.pinkLavender.opacity(0.5) : Color.white.opacity(0.5))
+                                        .foregroundColor(.primary)
+                                        .clipShape(Capsule())
+                                        .overlay(
+                                            Capsule()
+                                                .stroke(viewModel.selectedIngredients.contains { $0.name == ingredient.name } ? Color.pinkLavender : Color.white, lineWidth: 0.5)
+                                        )
                                 }
-                                
-                                
-                                
                             }
-                            .padding(.horizontal)
+                            
+                            
                             
                         }
+                        .padding(.horizontal)
+                        
+                    }
                     
-                        .frame(maxHeight: 140)
-                
-                        VStack {
-                            List{
+                    .frame(maxHeight: 140)
+                    
+                    VStack {
+                        List{
+                        
+                            
                             ForEach($viewModel.selectedIngredients) { $item in
+                                
                                 VStack{
                                     HStack {
                                         Text(item.name)
@@ -91,7 +96,7 @@ struct IngredientSelectionSheet: View {
                                 }
                                 .padding(.vertical,3)
                                 .listRowBackground(Color.clear)
-
+                                
                                 .padding(.horizontal, 12)
                                 .padding(.vertical, 5)
                                 .frame(maxWidth:.infinity)
@@ -101,8 +106,8 @@ struct IngredientSelectionSheet: View {
                                 .swipeActions(edge: .trailing) {
                                     Button(role: .destructive) {
                                         Task {
-                                      viewModel.deleteFromSelectedItems(ingredientID: item.id)
-                                                }
+                                            viewModel.deleteFromSelectedItems(ingredientID: item.id)
+                                        }
                                     } label: {
                                         Label("Delete", systemImage: "trash")
                                     }
@@ -111,10 +116,11 @@ struct IngredientSelectionSheet: View {
                                 .listRowInsets(EdgeInsets())
                             }
                             .padding(.vertical,5)
-
+                            
                         }
-                            .scrollContentBackground(.hidden)
-
+                       
+                        .scrollContentBackground(.hidden)
+                        
                     }
                     
                     VStack{
@@ -158,9 +164,11 @@ struct IngredientSelectionSheet: View {
                     )
                     .shadow(radius: 5)
                     .padding(.horizontal)
-                  //  Spacer()
+                    //  Spacer()
                     Button("Save") {
+                       
                         isPresented = false
+                        viewModel.onNutritionButton2()
                     }
                     .font(.title2)
                     .frame(width: 300, height: 40)
