@@ -16,7 +16,6 @@ struct FavoriteView: View {
     @State  var nutritionData : HistoryModel? = nil
     @Environment(SettingVM.self) private var settingVM
     @State private var showingDeleteAlert = false
-    let onDelete: DeleteTip = .init()
 
     var body: some View {
         NavigationStack {
@@ -48,9 +47,8 @@ struct FavoriteView: View {
                             historyRow(for: item)
                         }
                         .popoverTip(
-                            onDelete
-                        )
-                        
+                            favoriteVM.onDeleteItem
+                        ).tipViewStyle(MyTipStyle())
                         .alert("Are you sure you want to delete this item?", isPresented: $showingDeleteAlert) {
                             Button("Delete", role: .destructive) {
                                 guard let history = selectedItemtoDelet else {
@@ -94,6 +92,9 @@ struct FavoriteView: View {
 
             .sheet(item: $selectedItem) { selected in
                  DetailView(favoriteItem: selected)
+                    .presentationDragIndicator(.visible)
+                    .presentationBackground(.ultraThinMaterial)
+            
             }
         }
     }

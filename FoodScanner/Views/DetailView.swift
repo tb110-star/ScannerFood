@@ -13,7 +13,7 @@ struct DetailView: View {
     var body: some View {
         
         ZStack {
-            Color.white.opacity(0.1).ignoresSafeArea()
+            Color.timberwolf.opacity(0.6).ignoresSafeArea()
             
             VStack {
                 if let url = URL(string: favoriteItem.imageUrl) {
@@ -24,10 +24,12 @@ struct DetailView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 15))
                             .shadow(radius: 5)
                             .padding()
+                            .padding(.top)
                     } placeholder: {
                         ProgressView()
                     }
                 }
+                
                 ScrollView(.vertical, showsIndicators: true) {
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
                         ForEach(favoriteItem.finalIngredients) { ingredient in
@@ -50,8 +52,8 @@ struct DetailView: View {
                     .padding(.horizontal,5)
                     
                 }
-                .frame(height: 200)
-
+                .frame(height: 120)
+                .padding(.horizontal)
 
                 List {
                     VStack{
@@ -68,7 +70,12 @@ struct DetailView: View {
                     }
                     .listRowBackground(Color.clear)
                 }
+                .padding(.horizontal)
+                .background(.ultraThinMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 20))
+                .scrollContentBackground(.hidden)
                 .padding()
+                
             }
         }
     }

@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 import SwiftUI
-
+import TipKit
 @MainActor
 @Observable
 final class FavoriteVM {
@@ -21,6 +21,8 @@ final class FavoriteVM {
     var targetCalories: Double = 2000
     var todayCalories: Double = 0
     var errorMessage: String?
+    var onDeleteItem : DeleteTip = DeleteTip()
+
     func calculateTodayCalories() {
         let today = Calendar.current.startOfDay(for: Date())
 
@@ -58,6 +60,7 @@ final class FavoriteVM {
             let fetchedItems = try await storeManager.findAll(byCreator: userID)
             historyItems = fetchedItems
             print("✅ Successfully upload histories from Firestore!")
+            onDeletItem()
             calculateTodayCalories()
         } catch {
             print("❌ error to find the histoey \(error.localizedDescription)")
@@ -92,5 +95,11 @@ final class FavoriteVM {
                 }
             }
         }
+    ///////////// TipKit
+    func onDeletItem() {
+        Task{
+            await DeleteTip.onDeleteEvent.donate()
+        }
+    }
 }
 

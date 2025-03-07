@@ -16,7 +16,6 @@ struct IngredientSelectionSheet: View {
     @State private var newIngredientName = ""
     @State private var newIngredientAmount = ""
     @State private var newIngredientUnit: MeasurementUnit = .gram
-    let onDelete: DeleteTip = .init()
     
     var body: some View {
         NavigationStack {
@@ -25,18 +24,21 @@ struct IngredientSelectionSheet: View {
                 
                 VStack(alignment: .leading) {
                     
-                    // ScrollView(.vertical, showsIndicators: false)
                     let columns = [
                         GridItem(.flexible(), spacing: 6),
                         GridItem(.flexible(), spacing: 6),
                         GridItem(.flexible(), spacing: 6)
                         
                     ]
-                    Text("Detected ingrediant")
-                        .font(.headline)
-                        .padding(.horizontal)
-                        .padding(.top)
-                    
+                    HStack{
+                        Text("Detected ingrediant")
+                            .font(.headline)
+                            .padding(.horizontal)
+                            .padding(.top)
+                        Text("you can select & deselect Items")
+                            .font(.caption2)
+                            .foregroundColor(.gray)
+                    }
                     ScrollView(.vertical, showsIndicators: true){
                         LazyVGrid(columns: columns, spacing: 6) {
                             
@@ -94,6 +96,7 @@ struct IngredientSelectionSheet: View {
                                     .pickerStyle(SegmentedPickerStyle())
                                     
                                 }
+  
                                 .padding(.vertical,3)
                                 .listRowBackground(Color.clear)
                                 
@@ -118,7 +121,10 @@ struct IngredientSelectionSheet: View {
                             .padding(.vertical,5)
                             
                         }
-                       
+ //////////////////////////TipKit
+                         .popoverTip(
+                                  viewModel.onDeleteItem
+                                   ).tipViewStyle(MyTipStyle())
                         .scrollContentBackground(.hidden)
                         
                     }
@@ -144,14 +150,15 @@ struct IngredientSelectionSheet: View {
                             viewModel.addCustomIngredient(name: newIngredientName, amount: newIngredientAmount, unit: newIngredientUnit)
                             newIngredientName = ""
                             newIngredientAmount = ""
+                            //viewModel.onDeletItem()
                         }
                         .font(.title2)
-                        .frame(width: 35, height: 30)       .background(Color.pink.opacity(0.4))   .foregroundColor(.white)
+                        .frame(width: 35, height: 30)
+                        .background(Color.pink.opacity(0.4))
+                        .foregroundColor(.white)
                         .clipShape(Circle())
                         .shadow(radius: 4)
-                        //                        .buttonStyle(.borderedProminent)
-                        //                        .tint(Color.pinkLavender)
-                        //                        .foregroundColor(Color.black)
+                        
                     }
                     .frame(maxWidth:.infinity)
                     .padding(.horizontal)
@@ -164,11 +171,12 @@ struct IngredientSelectionSheet: View {
                     )
                     .shadow(radius: 5)
                     .padding(.horizontal)
-                    //  Spacer()
                     Button("Save") {
                        
                         isPresented = false
+//////////////////////////TipKit
                         viewModel.onNutritionButton2()
+                            
                     }
                     .font(.title2)
                     .frame(width: 300, height: 40)

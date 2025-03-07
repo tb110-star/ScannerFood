@@ -31,7 +31,6 @@ struct ScanView: View {
                         
                         imagePreview(viewModel: viewModel, selectedImage: selectedImage)
                             .padding(.top, 20)
-                        //Spacer()
                         HStack{
                             Button(action: {
                                 Task {
@@ -47,9 +46,10 @@ struct ScanView: View {
                                     .clipShape(Capsule())
                                     .shadow(radius: 5)
                             }
-                            .popoverTip(
+  // ///////////////TipKit
+                                   .popoverTip(
                                 viewModel.onDetectButtton
-                            )
+                            ).tipViewStyle(MyButtonTipStyle())
                             
                             .scaleEffect(viewModel.isDetectEnabled ? 1.0 : 0.95)
                             .disabled(!viewModel.isDetectEnabled)
@@ -68,9 +68,10 @@ struct ScanView: View {
                                     .clipShape(Circle())
                                     .shadow(radius: 5)
                             }
+// ///////////////TipKit
                             .popoverTip(
                                 viewModel.onScannButton
-                            )
+                            ).tipViewStyle(MyButtonTipStyle())
                             
                             .confirmationDialog("Choose an option", isPresented: $isScanOptionsPresented, titleVisibility: .visible) {
                                 Button("📷 Camera") {
@@ -99,9 +100,10 @@ struct ScanView: View {
                                     .clipShape(Capsule())
                                     .shadow(radius: 5)
                             }
-                            .popoverTip(
+ // ///////////////TipKit
+                               .popoverTip(
                                 viewModel.onNutritionButton
-                            )
+                               ).tipViewStyle(MyButtonTipStyle())
                             .scaleEffect(viewModel.isNutritionEnabled ? 1.0 : 0.95)
                             .disabled(!viewModel.isNutritionEnabled)
                         }
@@ -272,11 +274,9 @@ private func editedIngredientsPreview(viewModel: ScanViewModel, isIngredientShee
                         Text("\(ingredient.amount) \(ingredient.unit.rawValue)")
                             .font(.caption)
                     }
-                    //   .padding()
                     .frame(maxWidth: .infinity)
                     .background(Color.white.opacity(0.4))
                     .clipShape(RoundedRectangle(cornerRadius: 12))
-                    //.shadow(radius: 1)
                 }
                 .padding(3)
             }

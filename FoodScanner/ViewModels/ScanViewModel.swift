@@ -29,6 +29,7 @@
      var onScannButton : ScannButtonTip = ScannButtonTip()
      var onDetectButtton : DetectButtonTip = DetectButtonTip()
      var onNutritionButton : NutritionButtonTip = NutritionButtonTip()
+     var onDeleteItem : DeleteTip = DeleteTip()
      // /* Mock
      let isMock: Bool 
         
@@ -44,13 +45,22 @@
                         }
             }
         }
+//////////////////////////TipKit
+
+     func onDeletItem() {
+         Task{
+             await DeleteTip.onDeleteEvent.donate()
+         }
+     }
+//////////////////////////TipKit
+
      private func onDetectButton() async{
          
              await DetectButtonTip.detectButtonTapped.donate()
-             
-         
          
      }
+//////////////////////////TipKit
+
       func onNutritionButton2() {
           Task{
               await NutritionButtonTip.nutritionButtonTapped.donate()
@@ -117,7 +127,6 @@
                
                  print("✅ Food recognition successful: \(recognizedItems.count) items detected")
                  isIngredientSheetPresented = true
-                // isNutritionEnabled = true
              } catch {
                  errorMessage = error.localizedDescription
                  print("❌ Error during food recognition: \(error.localizedDescription)")
@@ -129,10 +138,11 @@
      }
      
  // user can add the ingrediant by self
-      func addCustomIngredient(name: String, amount: String, unit: MeasurementUnit) {
+     func addCustomIngredient(name: String, amount: String, unit: MeasurementUnit)  {
           let newIngredient = SelectedIngredient( name: name, amount: amount, unit: unit,isChecked: true)
           selectedIngredients.append(newIngredient)
           print("✅ Manually added item: \(name) - \(amount) \(unit.rawValue)")
+         onDeletItem()
       }
      // selecting the relevent recognised ingrediant
     func toggleIngredientSelection(ingredient: RecognizedIngredient) {
@@ -147,9 +157,7 @@
      func generateFinalList() {
              finalIngredients = selectedIngredients.filter { $0.isChecked || !$0.amount.isEmpty }
              print("✅ Final List Ready: \(finalIngredients.count) items")
-//         Task{
-//             await onNutritionButton()
-//         }
+
          }
    // generating an acceptable format string of list to sent to API
      func createNutritionInput() -> String {
