@@ -35,7 +35,7 @@ struct ScanView: View {
                             Button(action: {
                                 Task {
                                     viewModel.recognizeFood()
-                                    
+                                    viewModel.onDetectButtton.invalidate(reason: .actionPerformed)
                                 }
                             }) {
                                 Text("Detect")
@@ -49,7 +49,7 @@ struct ScanView: View {
   // ///////////////TipKit
                                    .popoverTip(
                                 viewModel.onDetectButtton
-                            ).tipViewStyle(MyButtonTipStyle())
+                                   ).tipViewStyle(MyButtonTipStyle())
                             
                             .scaleEffect(viewModel.isDetectEnabled ? 1.0 : 0.95)
                             .disabled(!viewModel.isDetectEnabled)
@@ -71,7 +71,9 @@ struct ScanView: View {
 // ///////////////TipKit
                             .popoverTip(
                                 viewModel.onScannButton
+                                    
                             ).tipViewStyle(MyButtonTipStyle())
+
                             
                             .confirmationDialog("Choose an option", isPresented: $isScanOptionsPresented, titleVisibility: .visible) {
                                 Button("📷 Camera") {
@@ -89,8 +91,11 @@ struct ScanView: View {
                                     if viewModel.nutritionResults == nil {
                                         viewModel.fetchNutritionData()
                                     }
+
                                     isNutritionSheetPresented = true
                                 }
+                                viewModel.onNutritionButton.invalidate(reason: .actionPerformed)
+
                             }) {
                                 Text("Nutrition")
                                     .font(.headline)

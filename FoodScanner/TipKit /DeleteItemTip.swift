@@ -76,7 +76,7 @@ struct MyTipStyle: TipViewStyle {
         .padding()
         .background(.ultraThinMaterial)
         .cornerRadius (16)
-        .frame(width: 300, height: 100)
+      //  .frame(width: 300, height: 100)
     }
     struct HandAnimationModifier: ViewModifier {
         @State private var handOffset: CGFloat = 50

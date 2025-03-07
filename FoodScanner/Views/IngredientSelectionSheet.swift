@@ -70,8 +70,10 @@ struct IngredientSelectionSheet: View {
                     .frame(maxHeight: 140)
                     
                     VStack {
+                        TipView(viewModel.onDeleteItem)
+                            .tipBackground(.ultraThinMaterial.opacity(0.5))
+                            .tipViewStyle(MyTipStyle()).padding(.horizontal,12)
                         List{
-                        
                             
                             ForEach($viewModel.selectedIngredients) { $item in
                                 
@@ -122,9 +124,9 @@ struct IngredientSelectionSheet: View {
                             
                         }
  //////////////////////////TipKit
-                         .popoverTip(
-                                  viewModel.onDeleteItem
-                                   ).tipViewStyle(MyTipStyle())
+//                         .popoverTip(
+//                                  viewModel.onDeleteItem
+//                                   ).tipViewStyle(MyTipStyle())
                         .scrollContentBackground(.hidden)
                         
                     }

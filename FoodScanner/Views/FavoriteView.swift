@@ -42,13 +42,15 @@ struct FavoriteView: View {
                     .padding(.top, 10)
                     
                     if favoriteVM.selectedTab == 1 {
-
+                        TipView(favoriteVM.onDeleteItem)
+                          //  .tipBackground(.ultraThinMaterial.opacity(0.5))
+                            .tipViewStyle(MyTipStyle())
                         List(favoriteVM.historyItems, id: \..id) { item in
                             historyRow(for: item)
                         }
-                        .popoverTip(
-                            favoriteVM.onDeleteItem
-                        ).tipViewStyle(MyTipStyle())
+//                        .popoverTip(
+//                            favoriteVM.onDeleteItem
+//                        ).tipViewStyle(MyTipStyle())
                         .alert("Are you sure you want to delete this item?", isPresented: $showingDeleteAlert) {
                             Button("Delete", role: .destructive) {
                                 guard let history = selectedItemtoDelet else {

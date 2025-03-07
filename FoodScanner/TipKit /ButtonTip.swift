@@ -104,9 +104,8 @@ struct MyButtonTipStyle: TipViewStyle {
             }
         }
         .padding()
-        .background(.ultraThinMaterial)
+        .background(.ultraThinMaterial.opacity(0.5))
         .cornerRadius (16)
-        .frame(width: 300, height: 100)
     }
     struct AnimationModifier: ViewModifier {
         @State private var isTapping = false

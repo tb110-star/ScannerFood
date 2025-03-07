@@ -60,7 +60,9 @@ final class FavoriteVM {
             let fetchedItems = try await storeManager.findAll(byCreator: userID)
             historyItems = fetchedItems
             print("✅ Successfully upload histories from Firestore!")
-            onDeletItem()
+            if !historyItems.isEmpty {
+                onDeletItem()
+            }
             calculateTodayCalories()
         } catch {
             print("❌ error to find the histoey \(error.localizedDescription)")
