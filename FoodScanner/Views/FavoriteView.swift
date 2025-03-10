@@ -43,8 +43,8 @@ struct FavoriteView: View {
                     
                     if favoriteVM.selectedTab == 1 {
                         TipView(favoriteVM.onDeleteItem)
-                          //  .tipBackground(.ultraThinMaterial.opacity(0.5))
-                            .tipViewStyle(MyTipStyle())
+                            .tipBackground(.ultraThinMaterial.opacity(0.4))
+                            .tipViewStyle(MyTipStyle()).padding(.horizontal,12)
                         List(favoriteVM.historyItems, id: \..id) { item in
                             historyRow(for: item)
                         }

@@ -9,6 +9,7 @@
   import SwiftUI
   import FirebaseCore
 import TipKit
+import GoogleSignIn
   @main
   struct FoodScannerApp: App {
        private var tabVM = TabVM()

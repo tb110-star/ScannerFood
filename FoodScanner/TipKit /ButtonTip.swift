@@ -104,7 +104,7 @@ struct MyButtonTipStyle: TipViewStyle {
             }
         }
         .padding()
-        .background(.ultraThinMaterial.opacity(0.5))
+        .background(.ultraThinMaterial.opacity(0.1))
         .cornerRadius (16)
     }
     struct AnimationModifier: ViewModifier {

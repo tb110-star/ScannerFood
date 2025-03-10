@@ -35,8 +35,8 @@ struct IngredientSelectionSheet: View {
                             .font(.headline)
                             .padding(.horizontal)
                             .padding(.top)
-                        Text("you can select & deselect Items")
-                            .font(.caption2)
+                        Text("Select & deselect items")
+                            .font(.caption)
                             .foregroundColor(.gray)
                     }
                     ScrollView(.vertical, showsIndicators: true){
@@ -71,7 +71,7 @@ struct IngredientSelectionSheet: View {
                     
                     VStack {
                         TipView(viewModel.onDeleteItem)
-                            .tipBackground(.ultraThinMaterial.opacity(0.5))
+                            
                             .tipViewStyle(MyTipStyle()).padding(.horizontal,12)
                         List{
                             

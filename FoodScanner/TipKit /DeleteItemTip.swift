@@ -74,7 +74,7 @@ struct MyTipStyle: TipViewStyle {
             }
         }
         .padding()
-        .background(.ultraThinMaterial)
+        .background(.ultraThinMaterial.opacity(0.3))
         .cornerRadius (16)
       //  .frame(width: 300, height: 100)
     }

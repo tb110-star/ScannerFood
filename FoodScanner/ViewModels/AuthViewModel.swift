@@ -11,7 +11,7 @@ import Firebase
 import FirebaseAuth
 import Combine
 import SwiftUICore
-
+import GoogleSignIn
 @MainActor
 @Observable
 
@@ -34,7 +34,28 @@ final class AuthViewModel {
         AuthManager.shared.isUserSignedIn
     }
     private let userRepository = UserRepository()
+    func signInWithGoogle() {
+        Task {
+            do {
+                try await AuthManager.shared.signInWithGoogle()
+                 fetchCurrentUser()
+                print("✅ login via Google successfully")
+            } catch {
+                errorMessage = error.localizedDescription
+                print("❌ error within Google login: \(error.localizedDescription)")
+            }
+        }
+    }
 
+    func sendPasswordResetEmail(email: String) {
+        Task{
+            do{
+                try await AuthManager.shared.sendPasswordResetEmail(email: email)
+            }catch{
+                errorMessage = error.localizedDescription
+            }
+        }
+       }
     func signInAnonymously() {
         Task {
             do {

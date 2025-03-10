@@ -74,6 +74,7 @@ struct ScanView: View {
                                     
                             ).tipViewStyle(MyButtonTipStyle())
 
+
                             
                             .confirmationDialog("Choose an option", isPresented: $isScanOptionsPresented, titleVisibility: .visible) {
                                 Button("📷 Camera") {

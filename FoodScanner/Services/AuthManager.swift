@@ -4,8 +4,9 @@
 //
 //  Created by tarlan bakhtiari on 17.02.25.
 //
+import FirebaseCore
 
-
+import GoogleSignIn
 import FirebaseAuth
 @MainActor
 @Observable
@@ -26,7 +27,32 @@ final class AuthManager {
     var email: String? {
         user?.email
     }
+    func signInWithGoogle() async throws {
+        guard (FirebaseApp.app()?.options.clientID) != nil else {
+                throw URLError(.badURL)
+            }
+
+            guard let rootViewController =  UIApplication.shared.connectedScenes
+                .compactMap({ $0 as? UIWindowScene })
+                .flatMap({ $0.windows })
+                .first(where: { $0.isKeyWindow })?.rootViewController else {
+                throw URLError(.cannotFindHost)
+            }
+
+            let result = try await GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController)
+            guard let idToken = result.user.idToken?.tokenString else {
+                throw URLError(.badServerResponse)
+            }
+
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: result.user.accessToken.tokenString)
+           let authResult =  try await Auth.auth().signIn(with: credential)
+            self.user = authResult.user
+        }
     
+    
+    func sendPasswordResetEmail(email: String) async throws {
+           try await Auth.auth().sendPasswordReset(withEmail: email)
+       }
     func signInAnonymously() async throws(Error) {
         do {
             let result = try await auth.signInAnonymously()
