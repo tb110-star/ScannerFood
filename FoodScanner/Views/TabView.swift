@@ -54,7 +54,7 @@ struct TabContentView : View {
         case .home:
             HomeView(favoriteVM: FavoriteVM())
         case .scann:
-            ScanView(viewModel: ScanViewModel(isMock: true))
+            ScanView(viewModel: ScanViewModel(isMock: false))
              
         case .favorite:
             FavoriteView(favoriteVM: FavoriteVM())
