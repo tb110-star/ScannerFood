@@ -26,94 +26,11 @@ struct ScanView: View {
             ZStack {
                 
                 Color.timberwolf.ignoresSafeArea()
-                ScrollView {
+             //   ScrollView {
                     VStack() {
                         
                         imagePreview(viewModel: viewModel, selectedImage: selectedImage)
-                            .padding(.top, 20)
-                        HStack{
-                            Button(action: {
-                                Task {
-                                    viewModel.recognizeFood()
-                                    viewModel.onDetectButtton.invalidate(reason: .actionPerformed)
-                                }
-                            }) {
-                                Text("Detect")
-                                    .font(.headline)
-                                    .frame(width: 120, height: 45)
-                                    .background(viewModel.isDetectEnabled ? Color.manatee : Color.gray.opacity(0.5))
-                                    .foregroundColor(.white)
-                                    .clipShape(Capsule())
-                                    .shadow(radius: 5)
-                            }
-  // ///////////////TipKit
-                                   .popoverTip(
-                                viewModel.onDetectButtton
-                                   ).tipViewStyle(MyButtonTipStyle())
-                            
-                            .scaleEffect(viewModel.isDetectEnabled ? 1.0 : 0.95)
-                            .disabled(!viewModel.isDetectEnabled)
-                            
-                            
-                            
-                            Button(action: {
-                                isScanOptionsPresented = true
-                                viewModel.onScannButton.invalidate(reason: .actionPerformed)
-                            }) {
-                                Image(systemName: "qrcode.viewfinder")
-                                    .font(.largeTitle)
-                                    .foregroundColor(.white)
-                                    .frame(width: 70, height: 70)
-                                    .background(Color.pinkLavender.gradient)
-                                    .clipShape(Circle())
-                                    .shadow(radius: 5)
-                            }
-// ///////////////TipKit
-                            .popoverTip(
-                                viewModel.onScannButton
-                                    
-                            ).tipViewStyle(MyButtonTipStyle())
-
-
-                            
-                            .confirmationDialog("Choose an option", isPresented: $isScanOptionsPresented, titleVisibility: .visible) {
-                                Button("📷 Camera") {
-                                    isCameraSelected = true
-                                }
-                                
-                                Button("🖼 Gallery") {
-                                    isGallerySelected = true
-                                }
-                                
-                                Button("Cancel", role: .cancel) { }
-                            }
-                            Button(action: {
-                                Task {
-                                    if viewModel.nutritionResults == nil {
-                                        viewModel.fetchNutritionData()
-                                    }
-
-                                    isNutritionSheetPresented = true
-                                }
-                                viewModel.onNutritionButton.invalidate(reason: .actionPerformed)
-
-                            }) {
-                                Text("Nutrition")
-                                    .font(.headline)
-                                    .frame(width: 120, height: 45)
-                                    .background(viewModel.isNutritionEnabled ? Color.manatee : Color.gray.opacity(0.5))
-                                    .foregroundColor(.white)
-                                    .clipShape(Capsule())
-                                    .shadow(radius: 5)
-                            }
- // ///////////////TipKit
-                               .popoverTip(
-                                viewModel.onNutritionButton
-                               ).tipViewStyle(MyButtonTipStyle())
-                            .scaleEffect(viewModel.isNutritionEnabled ? 1.0 : 0.95)
-                            .disabled(!viewModel.isNutritionEnabled)
-                        }
-                        .padding(.top)
+                         .padding(.top, 20)
                         if viewModel.isLoading {
                             VStack {
                                 ProgressView()
@@ -128,30 +45,113 @@ struct ScanView: View {
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             
                         }
-                        Spacer()
                         
                         if !viewModel.selectedIngredients.isEmpty {
                             editedIngredientsPreview(viewModel: viewModel, isIngredientSheetPresented: $viewModel.isIngredientSheetPresented)
                         }
-                        
+                            
+                        Spacer()
+                       
+                       HStack{
+                                Button(action: {
+                                    Task {
+                                        viewModel.recognizeFood()
+                                        viewModel.onDetectButtton.invalidate(reason: .actionPerformed)
+                                    }
+                                }) {
+                                    Text("Detect")
+                                        .font(.headline)
+                                        .frame(width: 120, height: 45)
+                                        .background(viewModel.isDetectEnabled ? Color.manatee : Color.gray.opacity(0.5))
+                                        .foregroundColor(.white)
+                                        .clipShape(Capsule())
+                                        .shadow(radius: 5)
+                                }
+                                // ///////////////TipKit
+                                .popoverTip(
+                                    viewModel.onDetectButtton
+                                ).tipViewStyle(MyButtonTipStyle())
+                                
+                                    .scaleEffect(viewModel.isDetectEnabled ? 1.0 : 0.95)
+                                    .disabled(!viewModel.isDetectEnabled)
+                                
+                                
+                                
+                                Button(action: {
+                                    isScanOptionsPresented = true
+                                    viewModel.onScannButton.invalidate(reason: .actionPerformed)
+                                }) {
+                                    Image(systemName: "qrcode.viewfinder")
+                                        .font(.largeTitle)
+                                        .foregroundColor(.white)
+                                        .frame(width: 70, height: 70)
+                                        .background(Color.pinkLavender.gradient)
+                                        .clipShape(Circle())
+                                        .shadow(radius: 5)
+                                }
+                                // ///////////////TipKit
+                                .popoverTip(
+                                    viewModel.onScannButton
+                                    
+                                ).tipViewStyle(MyButtonTipStyle())
+                                
+                                
+                                
+                                    .confirmationDialog("Choose an option", isPresented: $isScanOptionsPresented, titleVisibility: .visible) {
+                                        Button("📷 Camera") {
+                                            isCameraSelected = true
+                                        }
+                                        
+                                        Button("🖼 Gallery") {
+                                            isGallerySelected = true
+                                        }
+                                        
+                                        Button("Cancel", role: .cancel) { }
+                                    }
+                                Button(action: {
+                                    Task {
+                                        if viewModel.nutritionResults == nil {
+                                            viewModel.fetchNutritionData()
+                                        }
+                                        
+                                        isNutritionSheetPresented = true
+                                    }
+                                    viewModel.onNutritionButton.invalidate(reason: .actionPerformed)
+                                    
+                                }) {
+                                    Text("Nutrition")
+                                        .font(.headline)
+                                        .frame(width: 120, height: 45)
+                                        .background(viewModel.isNutritionEnabled ? Color.manatee : Color.gray.opacity(0.5))
+                                        .foregroundColor(.white)
+                                        .clipShape(Capsule())
+                                        .shadow(radius: 5)
+                                }
+                                // ///////////////TipKit
+                                .popoverTip(
+                                    viewModel.onNutritionButton
+                                ).tipViewStyle(MyButtonTipStyle())
+                                    .scaleEffect(viewModel.isNutritionEnabled ? 1.0 : 0.95)
+                                    .disabled(!viewModel.isNutritionEnabled)
+                            }
+                         .padding(.bottom,30)
+                         .ignoresSafeArea(edges: .bottom)
                     }
                     .alert("Error", isPresented: $viewModel.showError, actions: {
                         Button("OK", role: .cancel) { }
                     }, message: {
                         Text("Oops! Something went wrong. Please refresh and try again.")
                     })
-                }
+              //  }
                 .navigationTitle("")
                 .toolbarBackground(.ultraThinMaterial.opacity(0.5), for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
-                
                 .onChange(of: isGallerySelected, initial: false) { oldValue, newValue in
                     if newValue {
                         isGallerySelected = false
                         showGalleryPicker = true
                     }
                 }
-                
                 .onChange(of: isCameraSelected) { oldValue, newValue in
                     if newValue {
                         isCameraSelected = false
@@ -169,7 +169,7 @@ struct ScanView: View {
                 .sheet(isPresented: $showCameraPicker) {
                     ImagePicker(sourceType: .camera, selectedImage: $selectedImage)
                         .presentationDragIndicator(.visible)
-                        .presentationBackground(.ultraThinMaterial.opacity(0.5))
+                        .presentationBackground(.ultraThinMaterial.opacity(0.4))
                 }
                 .sheet(isPresented: $viewModel.isIngredientSheetPresented) {
                     IngredientSelectionSheet(viewModel: viewModel, isPresented: $viewModel.isIngredientSheetPresented)
@@ -289,7 +289,7 @@ private func editedIngredientsPreview(viewModel: ScanViewModel, isIngredientShee
             .padding(.horizontal,5)
             
         }
-        .frame(height: 200)
+        .frame(height: 160)
         
     }
     .background(

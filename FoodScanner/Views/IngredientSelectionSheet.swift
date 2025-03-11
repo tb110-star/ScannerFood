@@ -82,7 +82,7 @@ struct IngredientSelectionSheet: View {
                                         Text(item.name)
                                             .bold()
                                         Spacer()
-                                        TextField("quantity", text: $item.amount)
+                                        TextField("qty", text: $item.amount)
                                             .keyboardType(.decimalPad)
                                             .frame(width: 50)
                                             .multilineTextAlignment(.center)

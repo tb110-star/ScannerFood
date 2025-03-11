@@ -26,9 +26,14 @@ struct LoginView: View {
                         .blur(radius: 2)
                     Text("Food Scanner")
                         .padding(.bottom)
-                        .foregroundColor(.pinkLavenderD)
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
+                      //  .foregroundColor(.pinkLavenderD)
+                        .font(.custom("AvenirNext-Bold", size: 38))
+                        .kerning(3)
+                        .foregroundStyle(
+                            LinearGradient(gradient: Gradient(colors: [Color.pinkLavender, Color.manatee]), startPoint: .leading, endPoint: .trailing)
+                            )
+                        .shadow(color: Color.manatee.opacity(0.3), radius: 10, x: 0, y: 5)
+                        .shadow(color: Color.pinkLavender.opacity(0.1), radius: 15, x: 0, y: 0)
                     VStack(spacing: 15) {
                         TextField("Email", text: $authViewModel.email)
                             .padding(12)
@@ -56,11 +61,11 @@ struct LoginView: View {
                                 .font(.callout)
                                 .underline()
                         }
-                        .padding(.top, 8)
+                        .padding(8)
                         
                     }
-                    
-                    .padding()
+                    .padding(.vertical,1)
+                    .padding(.horizontal)
                     Button(action: {
                         
                         authViewModel.signIn()
@@ -68,7 +73,7 @@ struct LoginView: View {
                     }) {
                         Text("Log In")
                             .foregroundColor(.white)
-                            .frame(width: 160, height: 40)
+                            .frame(width: 180, height: 40)
                             .background(Color.manatee)
                             .cornerRadius(25)
                     }
@@ -80,7 +85,7 @@ struct LoginView: View {
                     }) {
                         Text("Log In as guest!")
                             .foregroundColor(.white)
-                            .frame(width: 160, height: 40)
+                            .frame(width: 180, height: 40)
                             .background(Color.manatee)
                             .cornerRadius(25)
                     }
@@ -91,17 +96,19 @@ struct LoginView: View {
                         }
                     }) {
                         HStack {
-                            Image(systemName: "globe")
+                            Image("gmail")
                                 .resizable()
-                                .frame(width: 20, height: 20)
+                                .frame(width: 25, height: 25)
                             
                             Text("Google Account")
-                                .foregroundColor(.white)
-                                .frame(width: 160, height: 40)
-                                .background(Color.manatee)
-                                .cornerRadius(25)
+                                
                         }
+                        .foregroundColor(.white)
+                        .frame(width:180, height: 40)
+                        .background(Color.manatee)
+                        .cornerRadius(25)
                     }
+                    .padding(8)
                         Spacer()
                         
                         NavigationLink(destination: RegisterView(authViewModel: authViewModel)) {
