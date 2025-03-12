@@ -52,10 +52,10 @@ struct NutritionDetailView: View {
                     
                 } else {
                     VStack {
-//                        ProgressView()
-//                            .progressViewStyle(CircularProgressViewStyle(tint:.pinkLavender.opacity(0.5)))
-//                            .scaleEffect(3)
-//                            .padding()
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint:.pinkLavender.opacity(0.5)))
+                            .scaleEffect(3)
+                            .padding()
                         Text("Data is loading...")
                             .font(.headline)
                             .foregroundColor(.pinkLavender)

@@ -30,20 +30,20 @@ struct ScanView: View {
                 VStack() {
                     imagePreview(viewModel: viewModel, selectedImage: selectedImage)
                         .padding(.top, 20)
-                    if viewModel.isLoading {
-                        VStack {
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle(tint:.white.opacity(0.5)))
-                                .scaleEffect(3)
-                                .padding()
-                            Text("loading...")
-                                .font(.headline)
-                                .foregroundColor(.white)
-                        }
-                        .padding()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        
-                    }
+//                    if viewModel.isLoading {
+//                        VStack {
+//                            ProgressView()
+//                                .progressViewStyle(CircularProgressViewStyle(tint:.white.opacity(0.5)))
+//                                .scaleEffect(3)
+//                                .padding()
+//                            Text("loading...")
+//                                .font(.headline)
+//                                .foregroundColor(.white)
+//                        }
+//                        .padding()
+//                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+//                        
+//                    }
                     
                     if !viewModel.selectedIngredients.isEmpty {
                         editedIngredientsPreview(viewModel: viewModel, isIngredientSheetPresented: $viewModel.isIngredientSheetPresented)
@@ -281,13 +281,14 @@ struct ScanView: View {
     @MainActor
     private func scanningAnimationView() -> some View {
         ZStack {
-           
+            // 📸 تصویر اسکن با شفافیت کم
             Image(uiImage: UIImage(named: "scanViewImage") ?? UIImage())
                 .resizable()
-                .scaledToFit()
-                .frame(width: 350, height: 350)
+                .scaledToFill()
+                .frame(width: 350, height: 280)
                 .clipShape(RoundedRectangle(cornerRadius: 15))
-                .opacity(0.2)
+                .opacity(0.5)
+
             Rectangle()
                 .fill(Color.white.opacity(0.4))
                 .frame(width: 300, height: 4)
@@ -297,10 +298,31 @@ struct ScanView: View {
                         scannerPosition = 100
                     }
                 }
+
+            if viewModel.isLoading {
+                ZStack {
+                    Color.black.opacity(0.3)
+                        .clipShape(RoundedRectangle(cornerRadius: 15))
+
+                    VStack {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white.opacity(0.5)))
+                            .scaleEffect(2)
+                            .padding()
+
+                        Text("Loading...")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                    }
+                }
+                .frame(width: 350, height: 280)
+                .clipShape(RoundedRectangle(cornerRadius: 15))
+            }
         }
-        .frame(width: 350, height: 350)
+        .frame(width: 350, height: 280)
         .clipShape(RoundedRectangle(cornerRadius: 15))
     }
+
 }
 #Preview {
     ScanView(viewModel: ScanViewModel(isMock: false))
