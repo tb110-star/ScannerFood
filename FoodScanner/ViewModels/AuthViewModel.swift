@@ -60,9 +60,7 @@ final class AuthViewModel {
         Task {
             do {
                 try await AuthManager.shared.signInAnonymously()
-              //  let userID = AuthManager.shared.userID!
-              //  let email = AuthManager.shared.email!
-               // self.user = try await userRepository.insert(id: userID, createdOn: .now)
+                user?.userName = "Guest"
                 errorMessage = nil
             } catch {
                 errorMessage = error.localizedDescription
@@ -70,10 +68,27 @@ final class AuthViewModel {
         }
     }
     
+//    func signOut() {
+//        Task {
+//            try? AuthManager.shared.signOut()
+//            user = nil
+//            AuthManager.shared.checkAuth()
+//             fetchCurrentUser()
+//            print("username is :\(user?.userName ?? "")")
+//        }
+//    }
     func signOut() {
         Task {
-            try? AuthManager.shared.signOut()
-            user = nil
+            do {
+                try AuthManager.shared.signOut()
+                try await Task.sleep(for: .milliseconds(300))
+                AuthManager.shared.clearUser()
+                user = nil
+               // fetchCurrentUser()
+                print("User signed out successfully.")
+            } catch {
+                print("❌ Error signing out: \(error.localizedDescription)")
+            }
         }
     }
    
@@ -82,7 +97,6 @@ final class AuthViewModel {
             do {
                 try await AuthManager.shared.signUp(email: email, password: password)
                 let userID = AuthManager.shared.userID!
-              //  let email = AuthManager.shared.email!
                 self.user = try await userRepository.insert(id: userID, username: name, birthDate: birthDate, gender: gender)
                 errorMessage = "E-Mail or Password is not correct! "
             } catch {
@@ -116,14 +130,33 @@ final class AuthViewModel {
     private func fetchCurrentUser() {
         Task {
             do {
+                try await Auth.auth().currentUser?.reload()
                 if let userID = AuthManager.shared.userID {
-                    user = try await userRepository.find(by: userID)
+                    if let foundUser = try? await userRepository.find(by: userID) {
+                        user = foundUser
+                    } else {
+                        if let firebaseUser = Auth.auth().currentUser {
+                            if firebaseUser.isAnonymous {
+                                print("🟡 Anonymous user detected, setting user to Guest.")
+                               
+                            } else {
+                                let displayName = firebaseUser.displayName ?? "User"
+                                print("🟢 Logged-in user detected: \(displayName)")
+                                user = User(id: userID, signedUpOn: Date(), userName: displayName, birthDate: Date(), gender: "Unknown")
+                            }
+                        } else {
+                            user = nil
+                        }
+                    }
+                } else {
+                    user = nil
                 }
-            } catch {
-                errorMessage = "The user is not signed in."
             }
         }
     }
+
+
+
     
 }
 

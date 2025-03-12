@@ -16,6 +16,7 @@ struct FavoriteView: View {
     @State  var nutritionData : HistoryModel? = nil
     @Environment(SettingVM.self) private var settingVM
     @State private var showingDeleteAlert = false
+    @Environment(AuthViewModel.self) private var authViewModel
 
     var body: some View {
         NavigationStack {
@@ -72,14 +73,30 @@ struct FavoriteView: View {
                 }
             }
             .toolbar {
-                NavigationLink {
-                    SettingView(settingVM: settingVM, authViewModel: AuthViewModel())
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink {
+                        SettingView(settingVM: settingVM, authViewModel: AuthViewModel())
+                        
+                    } label: {
+                        Image(systemName: "gear")
+                            .font(.system(size: 22, weight: .bold))
+                            .foregroundColor(.gray)
+                    }
                     
-                } label: {
-                    Image(systemName: "gear")
-                        .font(.system(size: 22, weight: .bold))
-                        .foregroundColor(.gray)
                 }
+                ToolbarItem(placement: .topBarLeading) {
+                    if let user = authViewModel.user {
+                                         Text("\(user.userName) 👋")
+                                             .font(.custom("AvenirNext", size: 18))
+                                             .foregroundColor(Color(.darkGray))
+
+                                     } else{
+                                         Text("Hi,Dear Guest 😊").font(.custom("AvenirNext", size: 18))
+                                             .foregroundColor(Color(.darkGray))
+
+                 
+                                     }
+                                }
             }
 
             .onAppear {

@@ -8,6 +8,7 @@ import FirebaseCore
 
 import GoogleSignIn
 import FirebaseAuth
+import FirebaseFirestore
 @MainActor
 @Observable
 
@@ -47,9 +48,28 @@ final class AuthManager {
             let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: result.user.accessToken.tokenString)
            let authResult =  try await Auth.auth().signIn(with: credential)
             self.user = authResult.user
+           var displayName = authResult.user.displayName ?? "User"
+           try await saveUserToDatabase(user: authResult.user, displayName: displayName)
         }
     
-    
+    func saveUserToDatabase(user: FirebaseAuth.User, displayName: String) async throws {
+        let db = Firestore.firestore()
+        let userRef = db.collection("users").document(user.uid)
+
+        let document = try await userRef.getDocument()
+        
+        if !document.exists {
+            let userData: [String: Any] = [
+                "uid": user.uid,
+                "email": user.email ?? "",
+                "displayName": displayName,
+                "signedUpOn": Timestamp(date: Date())
+            ]
+
+            try await userRef.setData(userData)
+        }
+    }
+
     func sendPasswordResetEmail(email: String) async throws {
            try await Auth.auth().sendPasswordReset(withEmail: email)
        }
@@ -57,7 +77,6 @@ final class AuthManager {
         do {
             let result = try await auth.signInAnonymously()
             user = result.user
-            // no email with anonymous login, i.e. no fireUser assignment.
         } catch {
             throw .signUpAnonymouslyFailed(reason: error.localizedDescription)
         }
@@ -84,16 +103,18 @@ final class AuthManager {
         do {
             try auth.signOut()
             user = nil
+
         } catch {
             throw .signOutFailed(reason: error.localizedDescription)
         }
     }
-    
-   
-    private func checkAuth() {
+
+     func checkAuth() {
         user = auth.currentUser
     }
-
+    func clearUser() {
+        user = nil
+    }
     private let auth = Auth.auth()
 
   

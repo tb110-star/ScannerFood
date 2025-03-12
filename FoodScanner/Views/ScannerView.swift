@@ -10,6 +10,7 @@ import PhotosUI
 import TipKit
 struct ScanView: View {
     @Environment(SettingVM.self) private var settingVM
+    @Environment(AuthViewModel.self) private var authViewModel
     // @Environment(\.colorScheme) var colorScheme
     @State private var selectedItem: PhotosPickerItem? = nil
     @Bindable var viewModel: ScanViewModel
@@ -20,8 +21,8 @@ struct ScanView: View {
     @State private var showCameraPicker = false
     @State private var selectedImage: UIImage?
     @State private var isNutritionSheetPresented = false
-    @State private var scannerPosition: CGFloat = -100  // موقعیت اولیه خط اسکنر
-    @State private var isAnimating = false // کنترل شروع انیمیشن
+    @State private var scannerPosition: CGFloat = -100
+    @State private var isAnimating = false
     var body: some View {
         NavigationStack {
             ZStack {
@@ -101,6 +102,7 @@ struct ScanView: View {
                                 
                                 Button("Cancel", role: .cancel) { }
                             }
+                            .presentationBackground(.ultraThinMaterial)
                         Button(action: {
                             Task {
                                 if viewModel.nutritionResults == nil {
@@ -184,14 +186,30 @@ struct ScanView: View {
                 }
             }
             .toolbar {
-                NavigationLink {
-                    SettingView(settingVM: settingVM, authViewModel: AuthViewModel())
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink {
+                        SettingView(settingVM: settingVM, authViewModel: AuthViewModel())
+                        
+                    } label: {
+                        Image(systemName: "gear")
+                            .font(.system(size: 22, weight: .bold))
+                            .foregroundColor(.gray)
+                    }
                     
-                } label: {
-                    Image(systemName: "gear")
-                        .font(.system(size: 22, weight: .bold))
-                        .foregroundColor(.gray)
                 }
+                ToolbarItem(placement: .topBarLeading) {
+                    if let user = authViewModel.user {
+                                         Text("Hi,Dear \(user.userName) 👋")
+                                             .font(.custom("AvenirNext", size: 18))
+                                             .foregroundColor(Color(.darkGray))
+
+                                     } else{
+                                         Text("Hi,Dear Guest 😊").font(.custom("AvenirNext", size: 18))
+                                             .foregroundColor(Color(.darkGray))
+
+                 
+                                     }
+                                }
             }
         }
     }
@@ -281,7 +299,6 @@ struct ScanView: View {
     @MainActor
     private func scanningAnimationView() -> some View {
         ZStack {
-            // 📸 تصویر اسکن با شفافیت کم
             Image(uiImage: UIImage(named: "scanViewImage") ?? UIImage())
                 .resizable()
                 .scaledToFill()
