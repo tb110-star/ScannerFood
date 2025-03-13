@@ -49,9 +49,7 @@ struct FavoriteView: View {
                         List(favoriteVM.historyItems, id: \..id) { item in
                             historyRow(for: item)
                         }
-//                        .popoverTip(
-//                            favoriteVM.onDeleteItem
-//                        ).tipViewStyle(MyTipStyle())
+                        .scrollContentBackground(.hidden)
                         .alert("Are you sure you want to delete this item?", isPresented: $showingDeleteAlert) {
                             Button("Delete", role: .destructive) {
                                 guard let history = selectedItemtoDelet else {
@@ -68,6 +66,7 @@ struct FavoriteView: View {
                         List(favoriteVM.favoriteItems, id: \..id) { item in
                             historyRow(for: item)
                         }
+                        .scrollContentBackground(.hidden)
                         .listStyle(.plain)
                     }
                 }
@@ -129,7 +128,7 @@ struct FavoriteView: View {
             HStack(spacing: 12) {
                 AsyncImage(url: URL(string: item.imageUrl)) { image in
                     image.resizable()
-                        .scaledToFit()
+                        .scaledToFill()
                         .frame(width: 50, height: 50)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                 } placeholder: {
@@ -157,7 +156,8 @@ struct FavoriteView: View {
             }
             
             .padding(.vertical, 5)
-            .listRowBackground(Color.clear)
+            Divider()
+              .listRowBackground(Color.clear)
         }
     }
         .swipeActions{
@@ -171,6 +171,11 @@ struct FavoriteView: View {
             
         }
         .listRowBackground(Color.clear)
+        .listRowSeparator(.hidden)
+       // .listRowInsets(EdgeInsets())
+      //  .padding(.horizontal)
+//        Divider()
+//            .listRowBackground(Color.clear)
 
     }
     

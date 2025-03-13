@@ -20,7 +20,7 @@ struct DetailView: View {
                     AsyncImage(url: url) { image in
                         image.resizable()
                             .scaledToFill()
-                            .frame(width: 300, height: 300)
+                            .frame(width: 350, height: 300)
                             .clipShape(RoundedRectangle(cornerRadius: 15))
                             .shadow(radius: 5)
                             .padding()
@@ -70,11 +70,11 @@ struct DetailView: View {
                     }
                     .listRowBackground(Color.clear)
                 }
-                .padding(.horizontal)
+               // .padding(.horizontal)
                 .background(.ultraThinMaterial)
                 .clipShape(RoundedRectangle(cornerRadius: 20))
                 .scrollContentBackground(.hidden)
-                .padding()
+                .padding(22)
                 
             }
         }
