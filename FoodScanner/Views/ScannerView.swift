@@ -27,25 +27,9 @@ struct ScanView: View {
         NavigationStack {
             ZStack {
                 Color.timberwolf.ignoresSafeArea()
-                //   ScrollView {
                 VStack() {
                     imagePreview(viewModel: viewModel, selectedImage: selectedImage)
                         .padding(.top, 20)
-//                    if viewModel.isLoading {
-//                        VStack {
-//                            ProgressView()
-//                                .progressViewStyle(CircularProgressViewStyle(tint:.white.opacity(0.5)))
-//                                .scaleEffect(3)
-//                                .padding()
-//                            Text("loading...")
-//                                .font(.headline)
-//                                .foregroundColor(.white)
-//                        }
-//                        .padding()
-//                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-//                        
-//                    }
-                    
                     if !viewModel.selectedIngredients.isEmpty {
                         editedIngredientsPreview(viewModel: viewModel, isIngredientSheetPresented: $viewModel.isIngredientSheetPresented)
                     } else {
@@ -89,17 +73,14 @@ struct ScanView: View {
                         // ///////////////TipKit
                         .popoverTip(
                             viewModel.onScannButton
-                            
                         ).tipViewStyle(MyButtonTipStyle())
                             .confirmationDialog("Choose an option", isPresented: $isScanOptionsPresented, titleVisibility: .visible) {
                                 Button("📷 Camera") {
                                     isCameraSelected = true
                                 }
-                                
                                 Button("🖼 Gallery") {
                                     isGallerySelected = true
                                 }
-                                
                                 Button("Cancel", role: .cancel) { }
                             }
                             .presentationBackground(.ultraThinMaterial)
@@ -132,12 +113,11 @@ struct ScanView: View {
                     .padding(.bottom)
                     .ignoresSafeArea(edges: .bottom)
                 }
-                .alert("Error", isPresented: $viewModel.showError, actions: {
-                    Button("OK", role: .cancel) { }
-                }, message: {
-                    Text("Oops! Something went wrong. Please refresh and try again.")
-                })
-                //  }
+//                .alert("Error", isPresented: $viewModel.showError, actions: {
+//                    Button("OK", role: .cancel) { }
+//                }, message: {
+//                    Text("Oops! Something went wrong. Please refresh and try again.")
+//                })
                 .navigationTitle("")
                 .toolbarBackground(.ultraThinMaterial.opacity(0.5), for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
@@ -199,19 +179,24 @@ struct ScanView: View {
                 }
                 ToolbarItem(placement: .topBarLeading) {
                     if let user = authViewModel.user {
-                                         Text("Hi,Dear \(user.userName) 👋")
-                                             .font(.custom("AvenirNext", size: 18))
-                                             .foregroundColor(Color(.darkGray))
-
-                                     } else{
-                                         Text("Hi,Dear Guest 😊").font(.custom("AvenirNext", size: 18))
-                                             .foregroundColor(Color(.darkGray))
-
-                 
-                                     }
-                                }
+                        Text("Hi,Dear \(user.userName) 👋")
+                            .font(.custom("AvenirNext", size: 18))
+                            .foregroundColor(Color(.darkGray))
+                        
+                    } else{
+                        Text("Hi,Dear Guest 😊").font(.custom("AvenirNext", size: 18))
+                            .foregroundColor(Color(.darkGray))
+                        
+                        
+                    }
+                }
             }
         }
+        .alert("Error", isPresented: $viewModel.showError, actions: {
+            Button("OK", role: .cancel) { }
+        }, message: {
+            Text("Oops! Something went wrong. Please refresh and try again.")
+        })
     }
     
     @MainActor
@@ -305,7 +290,7 @@ struct ScanView: View {
                 .frame(width: 350, height: 280)
                 .clipShape(RoundedRectangle(cornerRadius: 15))
                 .opacity(0.5)
-
+            
             Rectangle()
                 .fill(Color.white.opacity(0.4))
                 .frame(width: 300, height: 4)
@@ -315,18 +300,18 @@ struct ScanView: View {
                         scannerPosition = 100
                     }
                 }
-
+            
             if viewModel.isLoading {
                 ZStack {
                     Color.black.opacity(0.3)
                         .clipShape(RoundedRectangle(cornerRadius: 15))
-
+                    
                     VStack {
                         ProgressView()
                             .progressViewStyle(CircularProgressViewStyle(tint: .white.opacity(0.5)))
                             .scaleEffect(2)
                             .padding()
-
+                        
                         Text("Loading...")
                             .font(.headline)
                             .foregroundColor(.white)
@@ -339,7 +324,7 @@ struct ScanView: View {
         .frame(width: 350, height: 280)
         .clipShape(RoundedRectangle(cornerRadius: 15))
     }
-
+    
 }
 #Preview {
     ScanView(viewModel: ScanViewModel(isMock: false))
