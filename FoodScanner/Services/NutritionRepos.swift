@@ -7,14 +7,16 @@
 
 import Foundation
 final class NutritionRepository {
-    private let apiKey = "e6b6567c08msh2b80dc699ed1f3bp1f9b49jsnb6c8f7c79d11"
     private let baseURL = "https://ai-nutritional-facts.p.rapidapi.com/getNutritionalInfo"
 
     func getNutritionInfo(_ request: NutritionRequest) async throws -> NutritionResponse {
         guard let url = URL(string: baseURL) else {
             throw URLError(.badURL)
         }
-
+        
+        guard let apiKey = ProcessInfo.processInfo.environment["NutritionAPI"] else {
+            throw URLError(.badServerResponse)
+        }
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
         urlRequest.setValue(apiKey, forHTTPHeaderField: "x-rapidapi-key")

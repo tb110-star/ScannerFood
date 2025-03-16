@@ -4,14 +4,13 @@
 //
 //  Created by tarlan bakhtiari on 04.02.25.
 
-
+//
 import SwiftUI
 import PhotosUI
 import TipKit
 struct ScanView: View {
     @Environment(SettingVM.self) private var settingVM
     @Environment(AuthViewModel.self) private var authViewModel
-    // @Environment(\.colorScheme) var colorScheme
     @State private var selectedItem: PhotosPickerItem? = nil
     @Bindable var viewModel: ScanViewModel
     @State private var isScanOptionsPresented = false
@@ -23,6 +22,8 @@ struct ScanView: View {
     @State private var isNutritionSheetPresented = false
     @State private var scannerPosition: CGFloat = -100
     @State private var isAnimating = false
+    @State private var isExpanded = false
+    @Namespace private var animationNamespace
     var body: some View {
         NavigationStack {
             ZStack {
@@ -55,7 +56,7 @@ struct ScanView: View {
                         .popoverTip(
                             viewModel.onDetectButtton
                         ).tipViewStyle(MyButtonTipStyle())
-                        
+
                             .scaleEffect(viewModel.isDetectEnabled ? 1.0 : 0.95)
                             .disabled(!viewModel.isDetectEnabled)
                         Button(action: {
@@ -89,11 +90,11 @@ struct ScanView: View {
                                 if viewModel.nutritionResults == nil {
                                     viewModel.fetchNutritionData()
                                 }
-                                
+
                                 isNutritionSheetPresented = true
                             }
                             viewModel.onNutritionButton.invalidate(reason: .actionPerformed)
-                            
+
                         }) {
                             Text("Nutrition")
                                 .font(.headline)
@@ -113,11 +114,7 @@ struct ScanView: View {
                     .padding(.bottom)
                     .ignoresSafeArea(edges: .bottom)
                 }
-//                .alert("Error", isPresented: $viewModel.showError, actions: {
-//                    Button("OK", role: .cancel) { }
-//                }, message: {
-//                    Text("Oops! Something went wrong. Please refresh and try again.")
-//                })
+
                 .navigationTitle("")
                 .toolbarBackground(.ultraThinMaterial.opacity(0.5), for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
@@ -137,6 +134,10 @@ struct ScanView: View {
                     Task {
                         if let data = try? await newItem?.loadTransferable(type: Data.self) {
                             viewModel.setSelectedImage(data)
+                            
+                            withAnimation(.spring(response: 0.5, dampingFraction: 0.7, blendDuration: 0.3)) {
+                                isExpanded = true
+                            }
                         }
                     }
                 }
@@ -153,9 +154,9 @@ struct ScanView: View {
                         .onDisappear {
                             if !viewModel.selectedIngredients.isEmpty {
                                 viewModel.isNutritionEnabled = true
-                                
+
                             }
-                            
+
                         }
                 }
                 .sheet(isPresented: $isNutritionSheetPresented) {
@@ -169,25 +170,25 @@ struct ScanView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     NavigationLink {
                         SettingView(settingVM: settingVM, authViewModel: AuthViewModel())
-                        
+
                     } label: {
                         Image(systemName: "gear")
                             .font(.system(size: 22, weight: .bold))
                             .foregroundColor(.gray)
                     }
-                    
+
                 }
                 ToolbarItem(placement: .topBarLeading) {
                     if let user = authViewModel.user {
                         Text("Hi,Dear \(user.userName) 👋")
                             .font(.custom("AvenirNext", size: 18))
                             .foregroundColor(Color(.darkGray))
-                        
+
                     } else{
                         Text("Hi,Dear Guest 😊").font(.custom("AvenirNext", size: 18))
                             .foregroundColor(Color(.darkGray))
-                        
-                        
+
+
                     }
                 }
             }
@@ -198,7 +199,7 @@ struct ScanView: View {
             Text("Oops! Something went wrong. Please refresh and try again.")
         })
     }
-    
+
     @MainActor
     private func imagePreview(viewModel: ScanViewModel, selectedImage: UIImage?) -> some View {
         ZStack {
@@ -206,28 +207,36 @@ struct ScanView: View {
                 Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFill()
-                    .frame(width:350, height: 250)
+                    .frame(width: isExpanded ? 350 : 350, height: isExpanded ? 250 : 50)
                     .clipShape(RoundedRectangle(cornerRadius: 15))
                     .shadow(radius: 5)
+                    .matchedGeometryEffect(id: "imageBox", in: animationNamespace)
+
             } else {
                 ZStack {
                     RoundedRectangle(cornerRadius: 20)
                         .fill(.ultraThinMaterial)
                         .background(.ultraThinMaterial)
-                        .frame(width: 350, height: 250)
+                        .frame(width: isExpanded ? 350 : 350, height: isExpanded ? 250 : 50)
                         .clipShape(RoundedRectangle(cornerRadius: 15))
                         .overlay(
                             VStack(spacing: 20) {
-                                Image(systemName: "viewfinder.circle")
-                                    .font(.system(size: 80, weight: .ultraLight))
-                                    .foregroundStyle(.gray.opacity(0.6))
-                                    .shadow(radius: 5)
-                                
+//                                Image(systemName: "viewfinder.circle")
+//                                    .font(.system(size: 80, weight: .ultraLight))
+//                                    .foregroundStyle(.gray.opacity(0.6))
+//                                    .shadow(radius: 5)
+
                                 Text("No Image to Scann")
                                     .font(.title2)
                                     .foregroundColor(.gray.opacity(0.8))
                             }
                         )
+                        .matchedGeometryEffect(id: "imageBox", in: animationNamespace)
+                        .onTapGesture {
+                            withAnimation(.spring(response: 0.5, dampingFraction: 0.7, blendDuration: 0.3)) {
+                                isExpanded.toggle()
+                            }
+                        }
                         .shadow(radius: 1)
                 }
             }
@@ -290,7 +299,7 @@ struct ScanView: View {
                 .frame(width: 350, height: 280)
                 .clipShape(RoundedRectangle(cornerRadius: 15))
                 .opacity(0.5)
-            
+
             Rectangle()
                 .fill(Color.white.opacity(0.4))
                 .frame(width: 300, height: 4)
@@ -300,18 +309,18 @@ struct ScanView: View {
                         scannerPosition = 100
                     }
                 }
-            
+
             if viewModel.isLoading {
                 ZStack {
                     Color.black.opacity(0.3)
                         .clipShape(RoundedRectangle(cornerRadius: 15))
-                    
+
                     VStack {
                         ProgressView()
                             .progressViewStyle(CircularProgressViewStyle(tint: .white.opacity(0.5)))
                             .scaleEffect(2)
                             .padding()
-                        
+
                         Text("Loading...")
                             .font(.headline)
                             .foregroundColor(.white)
@@ -324,8 +333,14 @@ struct ScanView: View {
         .frame(width: 350, height: 280)
         .clipShape(RoundedRectangle(cornerRadius: 15))
     }
-    
+
 }
+#Preview {
+    ScanView(viewModel: ScanViewModel(isMock: false))
+        .environment(SettingVM())
+}
+
+
 #Preview {
     ScanView(viewModel: ScanViewModel(isMock: false))
         .environment(SettingVM())

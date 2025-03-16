@@ -36,8 +36,9 @@ struct IngredientSelectionSheet: View {
                             .padding(.horizontal)
                             .padding(.top)
                         Text("Select & deselect items")
-                            .font(.caption)
+                            .font(.system(size:16))
                             .foregroundColor(.gray)
+                            .padding(.top)
                     }
                     ScrollView(.vertical, showsIndicators: true){
                         LazyVGrid(columns: columns, spacing: 6) {

@@ -8,7 +8,7 @@
 import Foundation
 
 final class FoodRecognitionRepository {
-    private let apiKey = "86232c0ec6msha0e6116dd4015d6p1801e2jsn8f9975c783b7"
+   
     private let host = "food-item-recognition.p.rapidapi.com"
     private let baseURL = "https://food-item-recognition.p.rapidapi.com/"
 
@@ -19,7 +19,9 @@ final class FoodRecognitionRepository {
             print("❌ Invalid API URL")
             throw URLError(.badURL)
         }
-
+        guard let apiKey = ProcessInfo.processInfo.environment["RecognitionAPI"] else {
+            throw URLError(.badServerResponse)
+        }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue(apiKey, forHTTPHeaderField: "x-rapidapi-key")
