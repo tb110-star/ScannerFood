@@ -215,8 +215,8 @@ struct ScanView: View {
             } else {
                 ZStack {
                     RoundedRectangle(cornerRadius: 20)
-                        .fill(.ultraThinMaterial)
-                        .background(.ultraThinMaterial)
+                        .fill(.ultraThinMaterial.opacity(0.8))
+                        .background(.ultraThinMaterial.opacity(0.8))
                         .frame(width: isExpanded ? 350 : 350, height: isExpanded ? 250 : 50)
                         .clipShape(RoundedRectangle(cornerRadius: 15))
                         .overlay(
