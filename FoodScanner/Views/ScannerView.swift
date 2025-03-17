@@ -111,6 +111,14 @@ struct ScanView: View {
                             .scaleEffect(viewModel.isNutritionEnabled ? 1.0 : 0.95)
                             .disabled(!viewModel.isNutritionEnabled)
                     }
+                    .onChange(of: viewModel.selectedUIImage) { _, newImage in
+                        if newImage != nil {
+                            scannerPosition = -100
+                            withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)) {
+                                scannerPosition = 100
+                            }
+                        }
+                    }
                     .padding(.bottom)
                     .ignoresSafeArea(edges: .bottom)
                 }
@@ -141,6 +149,7 @@ struct ScanView: View {
                         }
                     }
                 }
+
                 .photosPicker(isPresented: $showGalleryPicker, selection: $selectedItem, matching: .images)
                 .sheet(isPresented: $showCameraPicker) {
                     ImagePicker(sourceType: .camera, selectedImage: $selectedImage)
@@ -330,6 +339,8 @@ struct ScanView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 15))
             }
         }
+   
+
         .frame(width: 350, height: 280)
         .clipShape(RoundedRectangle(cornerRadius: 15))
     }
