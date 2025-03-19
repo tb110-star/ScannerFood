@@ -30,7 +30,7 @@ final class ScanViewModel {
     var onDetectButtton : DetectButtonTip = DetectButtonTip()
     var onNutritionButton : NutritionButtonTip = NutritionButtonTip()
     var onDeleteItem : DeleteTip = DeleteTip()
-    // /* Mock
+    // * Mock
     let isMock: Bool
     init(isMock: Bool = false) {
         self.isMock = isMock
@@ -43,17 +43,17 @@ final class ScanViewModel {
             }
         }
     }
-    //////////////////////////TipKit
+    ///TipKit
     func onDeletItem() {
         Task{
             await DeleteTip.onDeleteEvent.donate()
         }
     }
-    //////////////////////////TipKit
+    ///TipKit
     private func onDetectButton() async{
         await DetectButtonTip.detectButtonTapped.donate()
     }
-    //////////////////////////TipKit
+    ///TipKit
     func onNutritionButton2() {
         Task{
             await NutritionButtonTip.nutritionButtonTapped.donate()
@@ -62,13 +62,13 @@ final class ScanViewModel {
     // */ Mock
     // loading image from Gallery and upload it to get public url
     func setSelectedImage(_ data: Data) {
-        // /* Mock
+        // * Mock
         if isMock {
             print("⚠️ Using mock image instead of real selection.")
             self.selectedUIImage = UIImage(named: "MockImage")
             return
         }
-        // */ Mock
+        // * Mock
         resetData()
         self.selectedUIImage = UIImage(data: data)
         print("✅ Image selected from gallery.")
