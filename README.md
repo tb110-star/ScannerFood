@@ -6,9 +6,8 @@
 <div align="center">
   <a >
 <<<<<<< HEAD
-    <img src="https://raw.githubusercontent.com/tb110-star/ScannerFood/main/pasted-image.jpeg" width="600">
 =======
-    <img src="/pasted-image.png" width="350">
+    <img src="/1024.png" width="350">
 >>>>>>> main
   </a>
 </div>
